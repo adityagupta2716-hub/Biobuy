@@ -176,24 +176,24 @@ export const AdminDashboard: React.FC = () => {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6">
       
       {/* Top Banner */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-200">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-800">
         <div>
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-100 text-indigo-800 text-[11px] font-bold uppercase tracking-wider mb-2">
-            <ShieldCheck className="w-3.5 h-3.5 text-indigo-600" />
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-900 border border-slate-800 text-blue-400 text-[11px] font-semibold uppercase tracking-wider mb-2">
+            <ShieldCheck className="w-3.5 h-3.5" />
             Administrator Control Center
           </div>
-          <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
             BioBuy Admin Console
           </h1>
-          <p className="text-xs text-slate-500 mt-1">
-            Logged in as <strong>{currentUser?.user_name}</strong>. Manage biotechnology catalog, inventory, teams, budgets, and audit records.
+          <p className="text-xs text-slate-400 mt-1">
+            Logged in as <strong className="text-white">{currentUser?.user_name}</strong>. Manage biotechnology catalog, inventory, teams, budgets, and audit records.
           </p>
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
           <button
             onClick={() => setIsAddModalOpen(true)}
-            className="inline-flex items-center gap-2 px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold shadow-md shadow-indigo-600/20 transition-all hover:scale-[1.02]"
+            className="inline-flex items-center gap-2 px-4 py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-semibold shadow-xs transition-colors"
           >
             <Plus className="w-4 h-4" />
             Add Product
@@ -201,7 +201,7 @@ export const AdminDashboard: React.FC = () => {
 
           <button
             onClick={() => setIsNewTeamModalOpen(true)}
-            className="inline-flex items-center gap-2 px-3.5 py-2.5 bg-sky-600 hover:bg-sky-700 text-white rounded-xl text-xs font-bold shadow-sm transition-all"
+            className="inline-flex items-center gap-2 px-3.5 py-2.5 bg-slate-800 hover:bg-slate-700 text-white border border-slate-700 rounded-xl text-xs font-semibold transition-colors"
           >
             <Users className="w-4 h-4" />
             Register Team
@@ -210,7 +210,7 @@ export const AdminDashboard: React.FC = () => {
           <button
             onClick={resetDemoData}
             title="Reset demo catalog and initial budgets"
-            className="inline-flex items-center gap-1.5 px-3 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-semibold border border-slate-300 transition-colors"
+            className="inline-flex items-center gap-1.5 px-3 py-2.5 bg-slate-900 hover:bg-slate-800 text-slate-300 rounded-xl text-xs font-semibold border border-slate-800 transition-colors"
           >
             <RotateCcw className="w-3.5 h-3.5" />
             Reset Data
@@ -218,7 +218,7 @@ export const AdminDashboard: React.FC = () => {
 
           <button
             onClick={logout}
-            className="inline-flex items-center gap-1.5 px-3 py-2.5 bg-rose-50 hover:bg-rose-100 text-rose-700 rounded-xl text-xs font-semibold border border-rose-200 transition-colors"
+            className="inline-flex items-center gap-1.5 px-3 py-2.5 bg-rose-950/60 hover:bg-rose-900/60 text-rose-300 rounded-xl text-xs font-semibold border border-rose-800/60 transition-colors"
           >
             <LogOut className="w-3.5 h-3.5" />
             Logout
@@ -229,34 +229,34 @@ export const AdminDashboard: React.FC = () => {
       {/* KPI Stats Overview Bar */}
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4">
         
-        <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-2xs">
+        <div className="bg-slate-900/90 p-4 rounded-2xl border border-slate-800 shadow-2xs">
           <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Catalog Products</span>
-          <p className="text-xl sm:text-2xl font-black text-slate-900 mt-1">{products.length}</p>
+          <p className="text-xl sm:text-2xl font-bold text-white mt-1">{products.length}</p>
           <p className="text-[11px] text-slate-500 mt-0.5">{products.filter(p => p.active).length} active items</p>
         </div>
 
-        <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-2xs">
+        <div className="bg-slate-900/90 p-4 rounded-2xl border border-slate-800 shadow-2xs">
           <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Registered Teams</span>
-          <p className="text-xl sm:text-2xl font-black text-slate-900 mt-1">{teams.length}</p>
+          <p className="text-xl sm:text-2xl font-bold text-white mt-1">{teams.length}</p>
           <p className="text-[11px] text-slate-500 mt-0.5">Contestant teams</p>
         </div>
 
-        <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-2xs">
+        <div className="bg-slate-900/90 p-4 rounded-2xl border border-slate-800 shadow-2xs">
           <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Total Spending</span>
-          <p className="text-xl sm:text-2xl font-black text-indigo-600 mt-1">{formatCurrency(totalSpendingAcrossTeams)}</p>
+          <p className="text-xl sm:text-2xl font-bold text-blue-400 mt-1">{formatCurrency(totalSpendingAcrossTeams)}</p>
           <p className="text-[11px] text-slate-500 mt-0.5">Across all teams</p>
         </div>
 
-        <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-2xs">
+        <div className="bg-slate-900/90 p-4 rounded-2xl border border-slate-800 shadow-2xs">
           <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Remaining Balances</span>
-          <p className="text-xl sm:text-2xl font-black text-emerald-600 mt-1">{formatCurrency(totalTeamRemainingBalances)}</p>
+          <p className="text-xl sm:text-2xl font-bold text-emerald-400 mt-1">{formatCurrency(totalTeamRemainingBalances)}</p>
           <p className="text-[11px] text-slate-500 mt-0.5">Unspent team credits</p>
         </div>
 
-        <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-2xs col-span-2 lg:col-span-1">
+        <div className="bg-slate-900/90 p-4 rounded-2xl border border-slate-800 shadow-2xs col-span-2 lg:col-span-1">
           <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Low Stock Alerts</span>
-          <p className="text-xl sm:text-2xl font-black text-amber-600 mt-1">
-            {lowStockProducts.length} <span className="text-xs text-rose-500 font-bold">({outOfStockProducts.length} out)</span>
+          <p className="text-xl sm:text-2xl font-bold text-amber-400 mt-1">
+            {lowStockProducts.length} <span className="text-xs text-rose-400 font-bold">({outOfStockProducts.length} out)</span>
           </p>
           <p className="text-[11px] text-slate-500 mt-0.5">Units ≤ 5 in lab</p>
         </div>

@@ -88,24 +88,24 @@ export const PurchaseHistory: React.FC = () => {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6">
       
       {/* Top Banner & Title */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-200">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-800">
         <div>
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-sky-100 text-sky-800 text-[11px] font-bold uppercase tracking-wider mb-2">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-900 border border-slate-800 text-blue-400 text-[11px] font-semibold uppercase tracking-wider mb-2">
             <History className="w-3.5 h-3.5" />
             Audit Ledger & Historical Records
           </div>
-          <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
             Team Purchase History
           </h1>
-          <p className="text-xs text-slate-500 mt-1">
-            Complete transaction record for <strong>{currentTeam.name}</strong>. Historical unit prices are permanently preserved.
+          <p className="text-xs text-slate-400 mt-1">
+            Complete transaction record for <strong className="text-white">{currentTeam.name}</strong>. Historical unit prices are permanently preserved.
           </p>
         </div>
 
         {purchases.length > 0 && (
           <button
             onClick={exportCSV}
-            className="inline-flex items-center gap-2 px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold shadow-md transition-all self-start sm:self-auto"
+            className="inline-flex items-center gap-2 px-4 py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-semibold shadow-xs transition-colors self-start sm:self-auto"
           >
             <Download className="w-4 h-4" />
             Export CSV Report
@@ -251,30 +251,30 @@ export const PurchaseHistory: React.FC = () => {
 
                     {/* Quantity */}
                     <td className="px-4 py-3.5 text-center">
-                      <span className="inline-block px-2.5 py-1 rounded-full bg-slate-100 font-bold text-slate-800">
+                      <span className="inline-block px-2.5 py-1 rounded-full bg-slate-950 border border-slate-800 font-bold text-slate-200">
                         {purchase.quantity}
                       </span>
                     </td>
 
                     {/* Total Amount */}
                     <td className="px-4 py-3.5 whitespace-nowrap">
-                      <span className="font-black text-slate-900 text-xs sm:text-sm">
+                      <span className="font-bold text-white text-xs sm:text-sm">
                         {formatCurrency(purchase.total_amount)}
                       </span>
                     </td>
 
                     {/* Timestamp */}
-                    <td className="px-4 py-3.5 text-slate-500 whitespace-nowrap">
+                    <td className="px-4 py-3.5 text-slate-400 whitespace-nowrap">
                       <div className="flex items-center gap-1.5 text-[11px]">
-                        <Calendar className="w-3.5 h-3.5 text-slate-400" />
+                        <Calendar className="w-3.5 h-3.5 text-slate-500" />
                         {formatDate(purchase.created_at)}
                       </div>
                     </td>
 
                     {/* Transaction ID */}
-                    <td className="px-4 py-3.5 font-mono text-[10px] text-slate-600 whitespace-nowrap">
-                      <div className="flex items-center gap-1 bg-slate-100 px-2 py-1 rounded-md border border-slate-200">
-                        <CheckCircle2 className="w-3 h-3 text-emerald-600" />
+                    <td className="px-4 py-3.5 font-mono text-[10px] text-slate-300 whitespace-nowrap">
+                      <div className="flex items-center gap-1 bg-slate-950 px-2 py-1 rounded-md border border-slate-800">
+                        <CheckCircle2 className="w-3 h-3 text-emerald-400" />
                         {purchase.transaction_id}
                       </div>
                     </td>
