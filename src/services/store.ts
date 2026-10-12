@@ -443,41 +443,114 @@ class BioBuyStore {
     const key = idempotencyKey || `TXN-${Date.now()}-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
 
     const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-    const isCloudUUID = uuidRegex.test(teamId) && uuidRegex.test(productId);
+    const client = supabase;
 
-    // 2. Supabase Cloud Execution (if configured and valid UUIDs)
-    if (isSupabaseConfigured && supabase && isCloudUUID) {
-      try {
-        const { data, error } = await supabase.rpc('process_purchase', {
-          p_team_id: teamId,
-          p_user_id: uuidRegex.test(this.currentUser.user_id) ? this.currentUser.user_id : null,
-          p_user_name: this.currentUser.user_name,
-          p_product_id: productId,
-          p_quantity: quantity,
-          p_idempotency_key: key,
-        });
+    // 2. Supabase Cloud Execution (if configured)
+    if (isSupabaseConfigured && client) {
+      let cloudTeamId: string | null = uuidRegex.test(teamId) ? teamId : null;
+      let cloudProductId: string | null = uuidRegex.test(productId) ? productId : null;
 
-        if (!error && data) {
-          if (!data.success) {
+      // Resolve team UUID if using local legacy team ID
+      if (!cloudTeamId && this.currentUser.current_team) {
+        const teamName = this.currentUser.current_team.name.toLowerCase().trim();
+        const foundTeam = this.teams.find(t => uuidRegex.test(t.id) && (
+          t.name.toLowerCase().trim() === teamName ||
+          t.name.toLowerCase().startsWith(teamName.split('(')[0].trim()) ||
+          teamName.startsWith(t.name.toLowerCase().split('(')[0].trim())
+        ));
+        if (foundTeam) {
+          cloudTeamId = foundTeam.id;
+        } else {
+          try {
+            const { data: dbTeam } = await client.from('teams').select('id').ilike('name', `%${teamName.split('(')[0].trim()}%`).limit(1).maybeSingle();
+            if (dbTeam?.id) cloudTeamId = dbTeam.id;
+          } catch (_) {}
+        }
+      }
+
+      // Resolve product UUID if using local legacy product ID
+      const currentProd = this.products.find(p => p.id === productId);
+      if (!cloudProductId && currentProd) {
+        const foundProd = this.products.find(p => uuidRegex.test(p.id) && (
+          p.catalog_number === currentProd.catalog_number ||
+          p.name.toLowerCase() === currentProd.name.toLowerCase()
+        ));
+        if (foundProd) {
+          cloudProductId = foundProd.id;
+        } else {
+          try {
+            const { data: dbProd } = await client.from('products').select('id').eq('catalog_number', currentProd.catalog_number).limit(1).maybeSingle();
+            if (dbProd?.id) cloudProductId = dbProd.id;
+          } catch (_) {}
+        }
+      }
+
+      if (cloudTeamId && cloudProductId) {
+        try {
+          const { data, error } = await client.rpc('process_purchase', {
+            p_team_id: cloudTeamId,
+            p_user_id: uuidRegex.test(this.currentUser.user_id) ? this.currentUser.user_id : null,
+            p_user_name: this.currentUser.user_name,
+            p_product_id: cloudProductId,
+            p_quantity: quantity,
+            p_idempotency_key: key,
+          });
+
+          if (!error && data) {
+            if (!data.success) {
+              return {
+                success: false,
+                error_code: data.error_code,
+                message: data.message,
+              };
+            }
+
+            const purchaseRecord: Purchase = {
+              id: data.purchase_id || `purch-${Date.now()}`,
+              team_id: cloudTeamId,
+              team_name: this.currentUser.current_team?.name || '',
+              user_id: this.currentUser.user_id,
+              user_name: this.currentUser.user_name,
+              transaction_id: data.transaction_id || key,
+              product_id: cloudProductId,
+              product_name_snapshot: data.product_name || currentProd?.name || '',
+              unit_price_snapshot: currentProd?.price || 0,
+              unit_of_sale_snapshot: currentProd?.unit_of_sale || 'Unit',
+              product_image_snapshot: currentProd?.image_url,
+              quantity,
+              total_amount: data.total_amount,
+              status: 'completed',
+              created_at: new Date().toISOString(),
+            };
+
+            this.purchases.unshift(purchaseRecord);
+            if (this.currentUser.current_team) {
+              this.currentUser.current_team.remaining_balance = data.new_balance;
+            }
+            const teamIdx = this.teams.findIndex(t => t.id === cloudTeamId || t.id === teamId);
+            if (teamIdx !== -1) {
+              this.teams[teamIdx].remaining_balance = data.new_balance;
+            }
+            const prodIdx = this.products.findIndex(p => p.id === cloudProductId || p.id === productId);
+            if (prodIdx !== -1) {
+              this.products[prodIdx].stock_quantity = data.new_stock;
+            }
+
+            this.saveToStorage();
+            this.notifyListeners();
+            await this.syncWithSupabase();
+
             return {
-              success: false,
-              error_code: data.error_code,
+              success: true,
               message: data.message,
+              purchase: purchaseRecord,
+              new_balance: data.new_balance,
+              new_stock: data.new_stock,
             };
           }
-
-          await this.syncWithSupabase();
-
-          return {
-            success: true,
-            message: data.message,
-            purchase: data.purchase,
-            new_balance: data.new_balance,
-            new_stock: data.new_stock,
-          };
+        } catch (err: any) {
+          console.warn('Supabase purchase RPC error, executing local atomic engine:', err);
         }
-      } catch (err: any) {
-        console.warn('Supabase purchase RPC error, executing local atomic engine:', err);
       }
     }
 
