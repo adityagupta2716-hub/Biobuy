@@ -194,8 +194,36 @@ class BioBuyStore {
 
       this.saveToStorage();
       this.notifyListeners();
+
+      // Automatically sync user accounts to Supabase Auth (auth.users)
+      this.syncUsersToSupabaseAuth();
     } catch (e) {
       console.warn('Supabase sync error, using local state:', e);
+    }
+  }
+
+  public async syncUsersToSupabaseAuth() {
+    if (!isSupabaseConfigured || !supabase) return;
+
+    for (const u of this.users) {
+      try {
+        const cleanName = u.name.toLowerCase().replace(/[^a-z0-9]/g, '_');
+        const email = u.email || `${cleanName}@biobuy.lab`;
+        const pass = u.password_hash || 'lab12345';
+        await supabase.auth.signUp({
+          email,
+          password: pass,
+          options: {
+            data: {
+              name: u.name,
+              role: u.role,
+              team_id: u.team_id || null,
+            },
+          },
+        });
+      } catch (err) {
+        // Silently continue if already registered or network throttled
+      }
     }
   }
 
@@ -305,11 +333,13 @@ class BioBuyStore {
     const cleanId = identifier.trim().toLowerCase();
     const cleanPassword = password ? password.trim() : '';
 
-    // Match by team name (for contestants) or "admin" (for administrators).
-    // Email is never required in the UI.
+    // Match by email, team name (for contestants), or "admin" (for administrators).
     const user = this.users.find(u => {
       if (u.role === 'admin') {
-        return cleanId === 'admin';
+        return cleanId === 'admin' || cleanId === 'admin@biobuy.lab' || (u.email && u.email.toLowerCase() === cleanId);
+      }
+      if (u.email && u.email.toLowerCase() === cleanId) {
+        return true;
       }
       // For contestants, match against their assigned team's name
       const team = this.teams.find(t => t.id === u.team_id);
@@ -322,7 +352,7 @@ class BioBuyStore {
     if (!user) {
       return {
         success: false,
-        message: 'Team not found. Enter your team name (e.g. "Team Alpha") or "Admin".',
+        message: 'Account or team not found. Enter your team name, registered email, or "Admin".',
       };
     }
 
@@ -668,7 +698,7 @@ class BioBuyStore {
    * Open to any visitor — no admin privilege required.
    * Creates a Team record + UserAccount atomically, then returns a live session.
    */
-  public registerTeam(teamName: string, password: string): AuthResult {
+  public registerTeam(teamName: string, password: string, email?: string): AuthResult {
     const trimmedName = teamName.trim();
     const trimmedPass = password.trim();
 
@@ -713,7 +743,9 @@ class BioBuyStore {
     };
     this.teams.push(newTeam);
 
-    // If Supabase is connected, insert the team directly into PostgreSQL
+    const userEmail = email?.trim() || `${trimmedName.toLowerCase().replace(/[^a-z0-9]/g, '_')}@biobuy.lab`;
+
+    // If Supabase is connected, insert the team into public.teams AND register in Supabase Auth (auth.users)!
     if (isSupabaseConfigured && supabase) {
       supabase.from('teams').insert({
         id: teamId,
@@ -723,13 +755,32 @@ class BioBuyStore {
       }).then(({ error }) => {
         if (error) console.warn('Supabase team registration sync error:', error);
       });
+
+      // Synchronize with Supabase Auth (auth.users)
+      supabase.auth.signUp({
+        email: userEmail,
+        password: trimmedPass,
+        options: {
+          data: {
+            name: trimmedName,
+            team_id: teamId,
+            role: 'contestant',
+          },
+        },
+      }).then(({ data, error }) => {
+        if (error) {
+          console.warn('Supabase Auth signUp note:', error.message);
+        } else {
+          console.log('User registered in Supabase auth.users:', data.user?.email);
+        }
+      });
     }
 
     // --- Create UserAccount record with PostgreSQL-compliant UUID ---
     const userId = this.generateUUID();
     const newUser: UserAccount = {
       id: userId,
-      email: `${teamId}@biobuy.lab`, // internal only, never shown in UI
+      email: userEmail,
       name: trimmedName,
       role: 'contestant',
       team_id: teamId,
@@ -760,7 +811,7 @@ class BioBuyStore {
     };
   }
 
-  public createTeam(name: string, initialBudget = 10000): Team {
+  public createTeam(name: string, initialBudget = 10000, password?: string, email?: string): Team {
     this.assertAdmin();
 
     const trimmed = name.trim();
@@ -770,8 +821,9 @@ class BioBuyStore {
     const dup = this.teams.find(t => t.name.toLowerCase() === lower);
     if (dup) throw new Error(`A team named "${dup.name}" already exists.`);
 
+    const teamId = this.generateUUID();
     const newTeam: Team = {
-      id: `team-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`,
+      id: teamId,
       name: trimmed,
       initial_budget: initialBudget,
       remaining_balance: initialBudget,
@@ -779,6 +831,50 @@ class BioBuyStore {
     };
 
     this.teams.push(newTeam);
+
+    const defaultPassword = password?.trim() || 'lab' + Math.floor(1000 + Math.random() * 9000);
+    const userEmail = email?.trim() || `${trimmed.toLowerCase().replace(/[^a-z0-9]/g, '_')}@biobuy.lab`;
+    const userId = this.generateUUID();
+    const newUser: UserAccount = {
+      id: userId,
+      email: userEmail,
+      name: trimmed,
+      role: 'contestant',
+      team_id: teamId,
+      password_hash: defaultPassword,
+      created_at: new Date().toISOString(),
+    };
+    this.users.push(newUser);
+
+    if (isSupabaseConfigured && supabase) {
+      supabase.from('teams').insert({
+        id: teamId,
+        name: trimmed,
+        initial_budget: initialBudget,
+        remaining_balance: initialBudget,
+      }).then(({ error }) => {
+        if (error) console.warn('Supabase createTeam error:', error);
+      });
+
+      supabase.auth.signUp({
+        email: userEmail,
+        password: defaultPassword,
+        options: {
+          data: {
+            name: trimmed,
+            team_id: teamId,
+            role: 'contestant',
+          },
+        },
+      }).then(({ data, error }) => {
+        if (error) {
+          console.warn('Supabase createTeam auth error:', error.message);
+        } else {
+          console.log('User registered in Supabase auth.users:', data.user?.email);
+        }
+      });
+    }
+
     this.saveToStorage();
     this.notifyListeners();
     return newTeam;

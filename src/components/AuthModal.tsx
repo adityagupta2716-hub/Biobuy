@@ -10,6 +10,7 @@ import {
   Eye,
   EyeOff,
   CheckCircle2,
+  Mail,
 } from 'lucide-react';
 import { useBioBuy } from '../context/BioBuyContext';
 
@@ -34,6 +35,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess
 
   // Register form state
   const [regTeam, setRegTeam] = useState('');
+  const [regEmail, setRegEmail] = useState('');
   const [regPass, setRegPass] = useState('');
   const [regConfirmPass, setRegConfirmPass] = useState('');
   const [showRegPass, setShowRegPass] = useState(false);
@@ -45,6 +47,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess
     setSignInTeam('');
     setSignInPass('');
     setRegTeam('');
+    setRegEmail('');
     setRegPass('');
     setRegConfirmPass('');
     onClose();
@@ -65,7 +68,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess
     e.preventDefault();
     setErrorMsg('');
     if (!signInTeam.trim()) {
-      setErrorMsg('Please enter your team name or "Admin".');
+      setErrorMsg('Please enter your team name, email, or "Admin".');
       return;
     }
     const res = login(signInTeam.trim(), signInPass);
@@ -93,7 +96,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess
       setErrorMsg('Passwords do not match.');
       return;
     }
-    const res = registerTeam(regTeam.trim(), regPass.trim());
+    const res = registerTeam(regTeam.trim(), regPass.trim(), regEmail.trim() || undefined);
     if (res.success) handleSuccess();
     else setErrorMsg(res.message);
   };
@@ -255,6 +258,23 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess
                   />
                 </div>
                 <p className="text-[10px] text-slate-500 mt-1">Must be unique (2–50 characters).</p>
+              </div>
+
+              <div>
+                <label className="block font-bold text-slate-400 uppercase tracking-wider mb-1.5">
+                  Email Address <span className="text-[10px] text-slate-500 font-normal lowercase">(optional for Supabase Auth)</span>
+                </label>
+                <div className="relative">
+                  <Mail className="w-4 h-4 text-slate-500 absolute left-3 top-3 pointer-events-none" />
+                  <input
+                    type="email"
+                    value={regEmail}
+                    onChange={e => setRegEmail(e.target.value)}
+                    placeholder='e.g. team@institution.org'
+                    className="w-full pl-9 pr-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-xl font-medium text-slate-200 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                  />
+                </div>
+                <p className="text-[10px] text-slate-500 mt-1">If empty, automatically generates a team ID email.</p>
               </div>
 
               <div>

@@ -44,7 +44,7 @@ interface BioBuyContextType {
   } | null;
   // Auth Actions
   login: (identifier: string, password?: string) => AuthResult;
-  registerTeam: (teamName: string, password: string) => AuthResult;
+  registerTeam: (teamName: string, password: string, email?: string) => AuthResult;
   logout: () => void;
   // Filter & Search Actions
   setSearchQuery: (q: string) => void;
@@ -58,7 +58,7 @@ interface BioBuyContextType {
   addProduct: (product: Omit<Product, 'id' | 'created_at' | 'updated_at'>) => void;
   deleteProduct: (productId: string) => void;
   adjustTeamBudget: (teamId: string, newBalance: number, reason: string) => void;
-  createTeam: (name: string, initialBudget?: number) => Team;
+  createTeam: (name: string, initialBudget?: number, password?: string, email?: string) => Team;
   resetDemoData: () => void;
   hideToast: () => void;
   showCustomToast: (type: 'success' | 'error' | 'info', title: string, message: string) => void;
@@ -163,13 +163,13 @@ export const BioBuyProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     showCustomToast('info', 'Logged Out', 'You have been securely signed out of your session.');
   };
 
-  const registerTeam = (teamName: string, password: string): AuthResult => {
-    const res = bioBuyStore.registerTeam(teamName, password);
+  const registerTeam = (teamName: string, password: string, email?: string): AuthResult => {
+    const res = bioBuyStore.registerTeam(teamName, password, email);
     if (res.success && res.session) {
       showCustomToast(
         'success',
         'Team Registered!',
-        `Welcome, ${res.session.user_name}! Your team has been created with a ₹10,000 virtual budget.`
+        `Welcome, ${res.session.user_name}! Your team has been created with a ₹10,000 virtual budget and synced to Supabase Auth.`
       );
     } else {
       showCustomToast('error', 'Registration Failed', res.message);
@@ -294,9 +294,9 @@ export const BioBuyProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     }
   };
 
-  const createTeam = (name: string, initialBudget = 10000): Team => {
+  const createTeam = (name: string, initialBudget = 10000, password?: string, email?: string): Team => {
     try {
-      const team = bioBuyStore.createTeam(name, initialBudget);
+      const team = bioBuyStore.createTeam(name, initialBudget, password, email);
       showCustomToast('success', 'Team Created', `Registered new team: ${team.name} with ₹${initialBudget.toLocaleString('en-IN')} allocation.`);
       return team;
     } catch (err: any) {
