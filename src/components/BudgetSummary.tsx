@@ -31,21 +31,21 @@ export const BudgetSummary: React.FC = () => {
   }
 
   return (
-    <section className="bg-white border-b border-slate-200 shadow-sm">
+    <section className="bg-slate-950 border-b border-slate-800/80">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-5">
-        <div className="bg-slate-50/80 rounded-2xl border border-slate-200/90 p-4 sm:p-5 shadow-xs">
+        <div className="bg-slate-900/90 rounded-2xl border border-slate-800 p-4 sm:p-5 shadow-xs">
           
           {/* Header Row: Team & Status */}
-          <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-slate-200/70">
+          <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-slate-800">
             <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-lg bg-sky-100 border border-sky-200 flex items-center justify-center text-sky-700">
+              <div className="w-8 h-8 rounded-lg bg-blue-950/70 border border-blue-800/60 flex items-center justify-center text-blue-400">
                 <Wallet className="w-4 h-4" />
               </div>
               <div>
-                <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">
+                <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
                   Active Procurement Team
                 </span>
-                <h2 className="text-base sm:text-lg font-bold text-slate-900 leading-tight">
+                <h2 className="text-base sm:text-lg font-bold text-white leading-tight">
                   {currentTeam.name}
                 </h2>
               </div>
@@ -54,7 +54,7 @@ export const BudgetSummary: React.FC = () => {
             <div className="flex items-center gap-2">
               <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold border ${statusColor}`}>
                 {percentageUsed >= 85 ? (
-                  <AlertTriangle className="w-3.5 h-3.5 animate-bounce" />
+                  <AlertTriangle className="w-3.5 h-3.5" />
                 ) : (
                   <CheckCircle2 className="w-3.5 h-3.5" />
                 )}
@@ -70,44 +70,44 @@ export const BudgetSummary: React.FC = () => {
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 my-4">
             
             {/* Initial Budget */}
-            <div className="bg-white p-3 sm:p-3.5 rounded-xl border border-slate-200 shadow-2xs">
-              <p className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Initial Budget</p>
-              <p className="text-base sm:text-xl font-black text-slate-800 mt-0.5">
+            <div className="bg-slate-950 p-3 sm:p-3.5 rounded-xl border border-slate-800 shadow-2xs">
+              <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Initial Budget</p>
+              <p className="text-base sm:text-xl font-bold text-white mt-0.5">
                 {formatCurrency(initialBudget)}
               </p>
-              <p className="text-[10px] text-slate-400 mt-0.5">Assigned Virtual Fund</p>
+              <p className="text-[10px] text-slate-500 mt-0.5">Assigned Virtual Fund</p>
             </div>
 
             {/* Amount Spent */}
-            <div className="bg-white p-3 sm:p-3.5 rounded-xl border border-slate-200 shadow-2xs">
+            <div className="bg-slate-950 p-3 sm:p-3.5 rounded-xl border border-slate-800 shadow-2xs">
               <div className="flex items-center justify-between">
-                <p className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Amount Spent</p>
-                <TrendingDown className="w-3.5 h-3.5 text-slate-400" />
+                <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Amount Spent</p>
+                <TrendingDown className="w-3.5 h-3.5 text-slate-500" />
               </div>
-              <p className="text-base sm:text-xl font-black text-slate-900 mt-0.5">
+              <p className="text-base sm:text-xl font-bold text-white mt-0.5">
                 {formatCurrency(amountSpent)}
               </p>
-              <p className="text-[10px] text-sky-600 font-medium mt-0.5">
+              <p className="text-[10px] text-blue-400 font-medium mt-0.5">
                 {percentageUsed}% of allocation
               </p>
             </div>
 
             {/* Remaining Balance */}
-            <div className="bg-white p-3 sm:p-3.5 rounded-xl border border-slate-200 shadow-2xs">
-              <p className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Remaining Balance</p>
-              <p className={`text-base sm:text-xl font-black mt-0.5 ${remainingBalance < 2000 ? 'text-amber-600' : 'text-emerald-600'}`}>
+            <div className="bg-slate-950 p-3 sm:p-3.5 rounded-xl border border-slate-800 shadow-2xs">
+              <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Remaining Balance</p>
+              <p className={`text-base sm:text-xl font-bold mt-0.5 ${remainingBalance < 2000 ? 'text-amber-400' : 'text-emerald-400'}`}>
                 {formatCurrency(remainingBalance)}
               </p>
-              <p className="text-[10px] text-slate-400 mt-0.5">{remainingPercentage}% available</p>
+              <p className="text-[10px] text-slate-500 mt-0.5">{remainingPercentage}% available</p>
             </div>
 
             {/* Budget Used Gauge */}
-            <div className="bg-white p-3 sm:p-3.5 rounded-xl border border-slate-200 shadow-2xs">
-              <p className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Budget Utilization</p>
-              <p className="text-base sm:text-xl font-black text-slate-800 mt-0.5">
+            <div className="bg-slate-950 p-3 sm:p-3.5 rounded-xl border border-slate-800 shadow-2xs">
+              <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Budget Utilization</p>
+              <p className="text-base sm:text-xl font-bold text-white mt-0.5">
                 {percentageUsed}%
               </p>
-              <p className="text-[10px] text-slate-400 mt-0.5">
+              <p className="text-[10px] text-slate-500 mt-0.5">
                 {amountSpent === 0 ? 'Fresh Allocation' : `${formatCurrency(remainingBalance)} left`}
               </p>
             </div>
@@ -116,15 +116,15 @@ export const BudgetSummary: React.FC = () => {
 
           {/* Animated Progress Bar */}
           <div>
-            <div className="flex justify-between items-center text-xs font-semibold text-slate-600 mb-1.5">
+            <div className="flex justify-between items-center text-xs font-semibold text-slate-400 mb-1.5">
               <span className="flex items-center gap-1">
-                <Sparkles className="w-3 h-3 text-sky-500" />
+                <Sparkles className="w-3 h-3 text-blue-400" />
                 Budget Expenditure Meter
               </span>
               <span>{percentageUsed}% used ({formatCurrency(amountSpent)} / {formatCurrency(initialBudget)})</span>
             </div>
             
-            <div className="w-full bg-slate-200 rounded-full h-3 overflow-hidden p-0.5">
+            <div className="w-full bg-slate-950 rounded-full h-3 overflow-hidden p-0.5 border border-slate-800">
               <div 
                 className={`h-full rounded-full transition-all duration-500 ease-out ${progressColor}`}
                 style={{ width: `${Math.max(3, percentageUsed)}%` }}

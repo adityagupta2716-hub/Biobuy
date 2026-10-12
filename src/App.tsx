@@ -156,14 +156,14 @@ const MainAppContent: React.FC = () => {
               {/* Heading & Subtitle */}
               <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
                 <div>
-                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-sky-100 text-sky-800 text-[11px] font-bold uppercase tracking-wider mb-2">
-                    <FlaskConical className="w-3.5 h-3.5 text-sky-600" />
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-900 border border-slate-800 text-slate-300 text-[11px] font-semibold uppercase tracking-wider mb-2">
+                    <FlaskConical className="w-3.5 h-3.5 text-blue-400" />
                     Biotechnology Raw Materials & Equipment
                   </div>
-                  <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+                  <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
                     Explore Biotechnology Products
                   </h2>
-                  <p className="text-xs sm:text-sm text-slate-500 mt-1">
+                  <p className="text-xs sm:text-sm text-slate-400 mt-1">
                     Research essentials, laboratory equipment, assay kits, and scientific consumables.
                   </p>
                 </div>

@@ -101,17 +101,17 @@ export const CategoryFilters: React.FC<CategoryFiltersProps> = ({ onCategorySele
               onClick={() => handleSelect(cat.id)}
               className={`flex items-center gap-2.5 px-3.5 py-2 rounded-lg text-xs font-semibold whitespace-nowrap transition-colors border ${
                 isSelected
-                  ? 'bg-slate-900 text-white border-slate-900 shadow-xs'
-                  : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50 hover:border-slate-300'
+                  ? 'bg-blue-600 text-white border-blue-500 shadow-xs'
+                  : 'bg-slate-900/90 text-slate-300 border-slate-800 hover:bg-slate-800 hover:border-slate-700'
               }`}
             >
-              <Icon className={`w-4 h-4 ${isSelected ? 'text-blue-400' : 'text-slate-500'}`} />
+              <Icon className={`w-4 h-4 ${isSelected ? 'text-white' : 'text-slate-400'}`} />
               <span>{cat.label}</span>
               <span
                 className={`text-[10px] px-1.5 py-0.5 rounded font-bold ${
                   isSelected
-                    ? 'bg-slate-800 text-slate-200'
-                    : 'bg-slate-100 text-slate-600'
+                    ? 'bg-blue-700 text-white'
+                    : 'bg-slate-950 text-slate-400 border border-slate-800'
                 }`}
               >
                 {count}
