@@ -56,10 +56,22 @@ class BioBuyStore {
       console.warn('BroadcastChannel not supported in this environment', e);
     }
 
-    // Setup Supabase Realtime if configured
+    // Setup Supabase Realtime & Initial Cloud Sync if configured
     if (isSupabaseConfigured && supabase) {
       this.setupSupabaseRealtime();
+      this.syncWithSupabase();
     }
+  }
+
+  private generateUUID(): string {
+    if (typeof crypto !== 'undefined' && crypto.randomUUID) {
+      return crypto.randomUUID();
+    }
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+      const r = (Math.random() * 16) | 0;
+      const v = c === 'x' ? r : (r & 0x3) | 0x8;
+      return v.toString(16);
+    });
   }
 
   private loadFromStorage() {
@@ -403,43 +415,40 @@ class BioBuyStore {
     const teamId = this.currentUser.current_team.id;
     const key = idempotencyKey || `TXN-${Date.now()}-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
 
-    // 2. Supabase Cloud Execution (if configured)
-    if (isSupabaseConfigured && supabase) {
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+    const isCloudUUID = uuidRegex.test(teamId) && uuidRegex.test(productId);
+
+    // 2. Supabase Cloud Execution (if configured and valid UUIDs)
+    if (isSupabaseConfigured && supabase && isCloudUUID) {
       try {
         const { data, error } = await supabase.rpc('process_purchase', {
           p_team_id: teamId,
-          p_user_id: this.currentUser.user_id,
+          p_user_id: uuidRegex.test(this.currentUser.user_id) ? this.currentUser.user_id : null,
           p_user_name: this.currentUser.user_name,
           p_product_id: productId,
           p_quantity: quantity,
           p_idempotency_key: key,
         });
 
-        if (error) {
-          return {
-            success: false,
-            error_code: 'TRANSACTION_FAILED',
-            message: error.message || 'Database transaction failed.',
-          };
-        }
+        if (!error && data) {
+          if (!data.success) {
+            return {
+              success: false,
+              error_code: data.error_code,
+              message: data.message,
+            };
+          }
 
-        if (!data.success) {
+          await this.syncWithSupabase();
+
           return {
-            success: false,
-            error_code: data.error_code,
+            success: true,
             message: data.message,
+            purchase: data.purchase,
+            new_balance: data.new_balance,
+            new_stock: data.new_stock,
           };
         }
-
-        await this.syncWithSupabase();
-
-        return {
-          success: true,
-          message: data.message,
-          purchase: data.purchase,
-          new_balance: data.new_balance,
-          new_stock: data.new_stock,
-        };
       } catch (err: any) {
         console.warn('Supabase purchase RPC error, executing local atomic engine:', err);
       }
@@ -693,8 +702,8 @@ class BioBuyStore {
       return { success: false, message: 'That team name is reserved. Please choose a different name.' };
     }
 
-    // --- Create Team record ---
-    const teamId = `team-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`;
+    // --- Create Team record with PostgreSQL-compliant UUID ---
+    const teamId = this.generateUUID();
     const newTeam: Team = {
       id: teamId,
       name: trimmedName,
@@ -704,8 +713,20 @@ class BioBuyStore {
     };
     this.teams.push(newTeam);
 
-    // --- Create UserAccount record ---
-    const userId = `user-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`;
+    // If Supabase is connected, insert the team directly into PostgreSQL
+    if (isSupabaseConfigured && supabase) {
+      supabase.from('teams').insert({
+        id: teamId,
+        name: trimmedName,
+        initial_budget: 10000,
+        remaining_balance: 10000,
+      }).then(({ error }) => {
+        if (error) console.warn('Supabase team registration sync error:', error);
+      });
+    }
+
+    // --- Create UserAccount record with PostgreSQL-compliant UUID ---
+    const userId = this.generateUUID();
     const newUser: UserAccount = {
       id: userId,
       email: `${teamId}@biobuy.lab`, // internal only, never shown in UI
