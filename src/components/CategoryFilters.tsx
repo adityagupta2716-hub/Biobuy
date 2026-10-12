@@ -99,18 +99,18 @@ export const CategoryFilters: React.FC<CategoryFiltersProps> = ({ onCategorySele
             <button
               key={cat.id}
               onClick={() => handleSelect(cat.id)}
-              className={`flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all border ${
+              className={`flex items-center gap-2.5 px-3.5 py-2 rounded-lg text-xs font-semibold whitespace-nowrap transition-colors border ${
                 isSelected
-                  ? 'bg-sky-600 text-white border-sky-600 shadow-sm shadow-sky-600/30 ring-2 ring-sky-200'
+                  ? 'bg-slate-900 text-white border-slate-900 shadow-xs'
                   : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50 hover:border-slate-300'
               }`}
             >
-              <Icon className={`w-4 h-4 ${isSelected ? 'text-white' : 'text-sky-600'}`} />
+              <Icon className={`w-4 h-4 ${isSelected ? 'text-blue-400' : 'text-slate-500'}`} />
               <span>{cat.label}</span>
               <span
-                className={`text-[10px] px-1.5 py-0.5 rounded-full font-bold ${
+                className={`text-[10px] px-1.5 py-0.5 rounded font-bold ${
                   isSelected
-                    ? 'bg-sky-700/80 text-white'
+                    ? 'bg-slate-800 text-slate-200'
                     : 'bg-slate-100 text-slate-600'
                 }`}
               >

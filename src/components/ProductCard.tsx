@@ -220,8 +220,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({
 
             {/* Live Informational Total */}
             <div className="text-right">
-              <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider block">Total</span>
-              <span className="text-xs sm:text-sm font-black text-sky-700">
+              <span className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider block">Total</span>
+              <span className="text-xs sm:text-sm font-bold text-slate-900">
                 {formatCurrency(totalCost)}
               </span>
             </div>
@@ -233,12 +233,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({
               type="button"
               onClick={handleBuyNow}
               disabled={isOutOfStock || isBuying}
-              className={`flex-1 py-2.5 px-3 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 shadow-sm transition-all ${
+              className={`flex-1 py-2.5 px-3 rounded-lg font-semibold text-xs flex items-center justify-center gap-1.5 transition-colors ${
                 isOutOfStock
-                  ? 'bg-slate-200 text-slate-400 cursor-not-allowed border border-slate-300'
+                  ? 'bg-slate-100 text-slate-400 cursor-not-allowed border border-slate-200'
                   : isBuying
-                  ? 'bg-sky-700 text-white cursor-wait opacity-80'
-                  : 'bg-gradient-to-r from-sky-500 to-teal-500 hover:from-sky-600 hover:to-teal-600 text-white shadow-sky-500/20 hover:scale-[1.01] active:scale-[0.99]'
+                  ? 'bg-blue-800 text-white cursor-wait opacity-80'
+                  : 'bg-blue-600 hover:bg-blue-700 text-white shadow-xs'
               }`}
             >
               {isBuying ? (
@@ -251,7 +251,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
               ) : (
                 <>
                   <ShoppingCart className="w-3.5 h-3.5" />
-                  <span>BUY NOW</span>
+                  <span>Buy Now</span>
                 </>
               )}
             </button>
@@ -261,7 +261,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
               type="button"
               onClick={() => onViewDetails(product)}
               title="View full product specifications"
-              className="p-2.5 rounded-xl bg-white border border-slate-300 hover:border-slate-400 text-slate-600 hover:text-slate-900 transition-colors shadow-2xs"
+              className="p-2.5 rounded-lg bg-white border border-slate-200 hover:bg-slate-50 text-slate-600 hover:text-slate-900 transition-colors"
             >
               <Info className="w-4 h-4" />
             </button>

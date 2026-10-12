@@ -40,25 +40,23 @@ export const Navbar: React.FC<NavbarProps> = ({
           
           {/* Logo & Brand */}
           <div 
-            className="flex items-center gap-3 cursor-pointer group" 
+            className="flex items-center gap-3 cursor-pointer" 
             onClick={() => setActiveTab(isAdmin ? 'admin' : 'marketplace')}
           >
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-sky-500 via-teal-500 to-indigo-600 p-0.5 shadow-md shadow-sky-500/30 flex items-center justify-center transition-transform group-hover:scale-105">
-              <div className="w-full h-full bg-slate-950 rounded-[10px] flex items-center justify-center">
-                <FlaskConical className="w-5 h-5 text-sky-400 group-hover:rotate-12 transition-transform duration-300" />
-              </div>
+            <div className="w-9 h-9 rounded-lg bg-blue-600 flex items-center justify-center text-white shadow-xs">
+              <FlaskConical className="w-5 h-5" />
             </div>
             <div>
-              <div className="flex items-center gap-1.5">
-                <span className="text-xl sm:text-2xl font-black tracking-tight text-white">
-                  Bio<span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-teal-400">Buy</span>
+              <div className="flex items-center gap-2">
+                <span className="text-xl font-bold tracking-tight text-white">
+                  BioBuy
                 </span>
-                <span className="text-[10px] uppercase font-bold tracking-widest px-1.5 py-0.5 rounded bg-sky-950/80 text-sky-300 border border-sky-800/60">
-                  {isAdmin ? 'Admin Mode' : 'Procurement'}
+                <span className="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700">
+                  {isAdmin ? 'Admin Portal' : 'Procurement'}
                 </span>
               </div>
-              <p className="text-[11px] text-slate-400 hidden sm:block font-medium">
-                Biotechnology Procurement
+              <p className="text-[11px] text-slate-400 hidden sm:block font-normal">
+                Laboratory Supplies & Equipment
               </p>
             </div>
           </div>

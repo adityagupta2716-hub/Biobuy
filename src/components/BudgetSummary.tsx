@@ -16,17 +16,17 @@ export const BudgetSummary: React.FC = () => {
   const formatCurrency = (val: number) => `₹${val.toLocaleString('en-IN')}`;
 
   // Color state for budget health
-  let statusColor = 'text-emerald-600 bg-emerald-50 border-emerald-200';
-  let progressColor = 'bg-gradient-to-r from-emerald-500 to-teal-500';
+  let statusColor = 'text-emerald-700 bg-emerald-50 border-emerald-200';
+  let progressColor = 'bg-emerald-600';
   let badgeLabel = 'Healthy Allocation';
 
   if (percentageUsed >= 85) {
-    statusColor = 'text-rose-600 bg-rose-50 border-rose-200';
-    progressColor = 'bg-gradient-to-r from-amber-500 to-rose-600';
+    statusColor = 'text-red-700 bg-red-50 border-red-200';
+    progressColor = 'bg-red-600';
     badgeLabel = 'Critical Budget (< 15%)';
   } else if (percentageUsed >= 60) {
-    statusColor = 'text-amber-600 bg-amber-50 border-amber-200';
-    progressColor = 'bg-gradient-to-r from-teal-500 to-amber-500';
+    statusColor = 'text-amber-700 bg-amber-50 border-amber-200';
+    progressColor = 'bg-amber-500';
     badgeLabel = 'Moderate Allocation';
   }
 
