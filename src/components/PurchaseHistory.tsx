@@ -116,45 +116,45 @@ export const PurchaseHistory: React.FC = () => {
       {/* 4 Summary Stat Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         
-        <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-2xs">
+        <div className="bg-slate-900/90 p-4 rounded-2xl border border-slate-800 shadow-2xs">
           <div className="flex items-center justify-between">
             <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Total Transactions</span>
-            <Receipt className="w-4 h-4 text-sky-600" />
+            <Receipt className="w-4 h-4 text-blue-400" />
           </div>
-          <p className="text-xl sm:text-2xl font-black text-slate-900 mt-1">
+          <p className="text-xl sm:text-2xl font-bold text-white mt-1">
             {totalPurchases}
           </p>
           <p className="text-[11px] text-slate-500 mt-0.5">Orders executed</p>
         </div>
 
-        <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-2xs">
+        <div className="bg-slate-900/90 p-4 rounded-2xl border border-slate-800 shadow-2xs">
           <div className="flex items-center justify-between">
             <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Units Acquired</span>
-            <ShoppingBag className="w-4 h-4 text-teal-600" />
+            <ShoppingBag className="w-4 h-4 text-teal-400" />
           </div>
-          <p className="text-xl sm:text-2xl font-black text-slate-900 mt-1">
+          <p className="text-xl sm:text-2xl font-bold text-white mt-1">
             {totalUnits}
           </p>
           <p className="text-[11px] text-slate-500 mt-0.5">Laboratory reagents & tools</p>
         </div>
 
-        <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-2xs">
+        <div className="bg-slate-900/90 p-4 rounded-2xl border border-slate-800 shadow-2xs">
           <div className="flex items-center justify-between">
             <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Total Spent</span>
-            <Sparkles className="w-4 h-4 text-indigo-600" />
+            <Sparkles className="w-4 h-4 text-indigo-400" />
           </div>
-          <p className="text-xl sm:text-2xl font-black text-slate-900 mt-1">
+          <p className="text-xl sm:text-2xl font-bold text-white mt-1">
             {formatCurrency(totalSpent)}
           </p>
           <p className="text-[11px] text-slate-500 mt-0.5">Virtual credits deducted</p>
         </div>
 
-        <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-2xs">
+        <div className="bg-slate-900/90 p-4 rounded-2xl border border-slate-800 shadow-2xs">
           <div className="flex items-center justify-between">
             <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Remaining Budget</span>
-            <Wallet className="w-4 h-4 text-emerald-600" />
+            <Wallet className="w-4 h-4 text-emerald-400" />
           </div>
-          <p className="text-xl sm:text-2xl font-black text-emerald-600 mt-1">
+          <p className="text-xl sm:text-2xl font-bold text-emerald-400 mt-1">
             {formatCurrency(remainingBudget)}
           </p>
           <p className="text-[11px] text-slate-500 mt-0.5">Available for procurement</p>
@@ -164,19 +164,19 @@ export const PurchaseHistory: React.FC = () => {
 
       {/* Search in History Bar */}
       {purchases.length > 0 && (
-        <div className="bg-white p-3 rounded-xl border border-slate-200 flex items-center gap-3">
-          <Search className="w-4 h-4 text-slate-400 ml-1" />
+        <div className="bg-slate-900/90 p-3 rounded-xl border border-slate-800 flex items-center gap-3">
+          <Search className="w-4 h-4 text-slate-500 ml-1" />
           <input
             type="text"
             value={historySearch}
             onChange={(e) => setHistorySearch(e.target.value)}
             placeholder="Search history by product name or transaction ID..."
-            className="flex-1 bg-transparent text-xs sm:text-sm font-medium focus:outline-hidden"
+            className="flex-1 bg-transparent text-xs sm:text-sm font-medium text-slate-200 placeholder:text-slate-500 focus:outline-hidden"
           />
           {historySearch && (
             <button
               onClick={() => setHistorySearch('')}
-              className="text-xs text-slate-400 hover:text-slate-700 font-semibold"
+              className="text-xs text-slate-400 hover:text-white font-semibold"
             >
               Clear
             </button>
@@ -186,25 +186,25 @@ export const PurchaseHistory: React.FC = () => {
 
       {/* Transactions Table / List */}
       {purchases.length === 0 ? (
-        <div className="bg-white rounded-3xl border border-slate-200 p-10 text-center max-w-md mx-auto shadow-xs">
-          <div className="w-14 h-14 rounded-2xl bg-slate-100 text-slate-400 flex items-center justify-center mx-auto mb-3">
+        <div className="bg-slate-900/90 rounded-3xl border border-slate-800 p-10 text-center max-w-md mx-auto shadow-xs">
+          <div className="w-14 h-14 rounded-2xl bg-slate-950 text-slate-500 flex items-center justify-center mx-auto mb-3 border border-slate-800">
             <ShoppingBag className="w-7 h-7" />
           </div>
-          <h3 className="text-base font-bold text-slate-900">No Purchases Yet</h3>
-          <p className="text-xs text-slate-500 mt-1">
+          <h3 className="text-base font-bold text-white">No Purchases Yet</h3>
+          <p className="text-xs text-slate-400 mt-1">
             Your team hasn't purchased any items yet. Visit the Marketplace to explore reagents, kits, and lab equipment.
           </p>
         </div>
       ) : filteredPurchases.length === 0 ? (
-        <div className="bg-white rounded-2xl border border-slate-200 p-8 text-center text-slate-500 text-xs">
+        <div className="bg-slate-900/90 rounded-2xl border border-slate-800 p-8 text-center text-slate-400 text-xs">
           No transactions match "{historySearch}".
         </div>
       ) : (
-        <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xs">
+        <div className="bg-slate-900/90 rounded-2xl border border-slate-800 overflow-hidden shadow-xs">
           
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead className="bg-slate-50 text-slate-500 font-bold uppercase tracking-wider border-b border-slate-200">
+              <thead className="bg-slate-950 text-slate-400 font-bold uppercase tracking-wider border-b border-slate-800">
                 <tr>
                   <th className="px-4 py-3.5">Product & Details</th>
                   <th className="px-4 py-3.5">Unit Price</th>
@@ -215,9 +215,9 @@ export const PurchaseHistory: React.FC = () => {
                 </tr>
               </thead>
 
-              <tbody className="divide-y divide-slate-100 text-slate-800">
+              <tbody className="divide-y divide-slate-800/80 text-slate-300">
                 {filteredPurchases.map((purchase) => (
-                  <tr key={purchase.id} className="hover:bg-slate-50/70 transition-colors">
+                  <tr key={purchase.id} className="hover:bg-slate-800/50 transition-colors">
                     
                     {/* Product Name & Snapshot */}
                     <td className="px-4 py-3.5">
@@ -226,18 +226,18 @@ export const PurchaseHistory: React.FC = () => {
                           <img
                             src={purchase.product_image_snapshot}
                             alt=""
-                            className="w-10 h-10 rounded-lg object-cover border border-slate-200 bg-slate-100 shrink-0"
+                            className="w-10 h-10 rounded-lg object-cover border border-slate-800 bg-slate-950 shrink-0"
                           />
                         ) : (
-                          <div className="w-10 h-10 rounded-lg bg-sky-50 border border-sky-200 flex items-center justify-center text-sky-600 shrink-0">
+                          <div className="w-10 h-10 rounded-lg bg-slate-950 border border-slate-800 flex items-center justify-center text-blue-400 shrink-0">
                             <Layers className="w-5 h-5" />
                           </div>
                         )}
                         <div>
-                          <p className="font-bold text-slate-900 text-xs sm:text-sm">
+                          <p className="font-bold text-white text-xs sm:text-sm">
                             {purchase.product_name_snapshot}
                           </p>
-                          <span className="text-[11px] text-slate-500">
+                          <span className="text-[11px] text-slate-400">
                             Sold as {purchase.unit_of_sale_snapshot}
                           </span>
                         </div>
@@ -245,7 +245,7 @@ export const PurchaseHistory: React.FC = () => {
                     </td>
 
                     {/* Historical Unit Price Snapshot */}
-                    <td className="px-4 py-3.5 font-semibold text-slate-700 whitespace-nowrap">
+                    <td className="px-4 py-3.5 font-semibold text-slate-300 whitespace-nowrap">
                       {formatCurrency(purchase.unit_price_snapshot)}
                     </td>
 

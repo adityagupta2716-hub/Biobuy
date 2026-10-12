@@ -126,7 +126,7 @@ const MainAppContent: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900 selection:bg-sky-500 selection:text-white">
+    <div className="min-h-screen flex flex-col bg-slate-950 text-slate-100 selection:bg-blue-600 selection:text-white">
       
       {/* Sticky Top Navigation with Strict Role Visibility */}
       <Navbar
@@ -142,7 +142,7 @@ const MainAppContent: React.FC = () => {
       {isContestant && <BudgetSummary />}
 
       {/* Main Page Routing Views */}
-      <main className="flex-1">
+      <main className="flex-1 bg-slate-950">
         
         {/* VIEW 1: Marketplace / Catalog */}
         {activeTab === 'marketplace' && (
@@ -212,10 +212,10 @@ const MainAppContent: React.FC = () => {
         {activeTab === 'categories' && (
           <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 space-y-6">
             <div>
-              <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
                 Product Categories
               </h2>
-              <p className="text-xs sm:text-sm text-slate-500 mt-1">
+              <p className="text-xs sm:text-sm text-slate-400 mt-1">
                 Browse our complete specialized biotechnology catalog by scientific domain.
               </p>
             </div>
