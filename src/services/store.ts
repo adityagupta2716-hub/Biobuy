@@ -194,9 +194,6 @@ class BioBuyStore {
 
       this.saveToStorage();
       this.notifyListeners();
-
-      // Automatically sync user accounts to Supabase Auth (auth.users)
-      this.syncUsersToSupabaseAuth();
     } catch (e) {
       console.warn('Supabase sync error, using local state:', e);
     }
@@ -745,19 +742,31 @@ class BioBuyStore {
 
     const userEmail = email?.trim() || `${trimmedName.toLowerCase().replace(/[^a-z0-9]/g, '_')}@biobuy.lab`;
 
+    const client = supabase;
     // If Supabase is connected, insert the team into public.teams AND register in Supabase Auth (auth.users)!
-    if (isSupabaseConfigured && supabase) {
-      supabase.from('teams').insert({
-        id: teamId,
-        name: trimmedName,
-        initial_budget: 10000,
-        remaining_balance: 10000,
-      }).then(({ error }) => {
-        if (error) console.warn('Supabase team registration sync error:', error);
+    if (isSupabaseConfigured && client) {
+      // 1. Try stored RPC function register_team (which runs as SECURITY DEFINER and bypasses RLS)
+      client.rpc('register_team', {
+        p_name: trimmedName,
+        p_initial_budget: 10000,
+      }).then(({ data, error }) => {
+        if (!error && data?.team_id) {
+          newTeam.id = data.team_id;
+        } else {
+          // Fallback to direct table insert
+          client.from('teams').insert({
+            id: teamId,
+            name: trimmedName,
+            initial_budget: 10000,
+            remaining_balance: 10000,
+          }).then(({ error: insertErr }) => {
+            if (insertErr) console.warn('Supabase team registration sync notice:', insertErr.message);
+          });
+        }
       });
 
-      // Synchronize with Supabase Auth (auth.users)
-      supabase.auth.signUp({
+      // 2. Synchronize with Supabase Auth (auth.users)
+      client.auth.signUp({
         email: userEmail,
         password: trimmedPass,
         options: {
@@ -769,7 +778,11 @@ class BioBuyStore {
         },
       }).then(({ data, error }) => {
         if (error) {
-          console.warn('Supabase Auth signUp note:', error.message);
+          if (error.message.includes('rate limit')) {
+            console.warn('Supabase Auth rate limit note: Disable "Confirm email" in Supabase Auth Settings to lift rate limits.');
+          } else {
+            console.warn('Supabase Auth signUp note:', error.message);
+          }
         } else {
           console.log('User registered in Supabase auth.users:', data.user?.email);
         }
@@ -846,17 +859,27 @@ class BioBuyStore {
     };
     this.users.push(newUser);
 
-    if (isSupabaseConfigured && supabase) {
-      supabase.from('teams').insert({
-        id: teamId,
-        name: trimmed,
-        initial_budget: initialBudget,
-        remaining_balance: initialBudget,
-      }).then(({ error }) => {
-        if (error) console.warn('Supabase createTeam error:', error);
+    const client = supabase;
+    if (isSupabaseConfigured && client) {
+      client.rpc('register_team', {
+        p_name: trimmed,
+        p_initial_budget: initialBudget,
+      }).then(({ data, error }) => {
+        if (!error && data?.team_id) {
+          newTeam.id = data.team_id;
+        } else {
+          client.from('teams').insert({
+            id: teamId,
+            name: trimmed,
+            initial_budget: initialBudget,
+            remaining_balance: initialBudget,
+          }).then(({ error: insertErr }) => {
+            if (insertErr) console.warn('Supabase createTeam notice:', insertErr.message);
+          });
+        }
       });
 
-      supabase.auth.signUp({
+      client.auth.signUp({
         email: userEmail,
         password: defaultPassword,
         options: {
