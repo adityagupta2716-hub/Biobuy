@@ -73,13 +73,13 @@ export const AdminDashboard: React.FC = () => {
   if (!isAdmin) {
     return (
       <div className="max-w-xl mx-auto py-20 px-4 text-center">
-        <div className="w-16 h-16 rounded-2xl bg-rose-100 text-rose-600 flex items-center justify-center mx-auto mb-4 border border-rose-200">
+        <div className="w-16 h-16 rounded-2xl bg-rose-950/60 text-rose-400 flex items-center justify-center mx-auto mb-4 border border-rose-800/60 shadow-lg">
           <AlertCircle className="w-8 h-8" />
         </div>
-        <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
+        <h2 className="text-xl sm:text-2xl font-black text-white tracking-tight">
           Access Denied: Administrator Only
         </h2>
-        <p className="text-xs sm:text-sm text-slate-500 mt-2 leading-relaxed">
+        <p className="text-xs sm:text-sm text-slate-400 mt-2 leading-relaxed">
           The administrator control console is strictly restricted to authenticated administrators. Contestants can only browse and purchase supplies using their team's virtual budget.
         </p>
       </div>
@@ -264,13 +264,13 @@ export const AdminDashboard: React.FC = () => {
       </div>
 
       {/* Sub Tabs Navigation */}
-      <div className="flex items-center gap-2 border-b border-slate-200 pb-1 overflow-x-auto">
+      <div className="flex items-center gap-2 border-b border-slate-800 pb-1 overflow-x-auto">
         <button
           onClick={() => setActiveSubTab('inventory')}
           className={`px-4 py-2 text-xs font-bold rounded-xl transition-all ${
             activeSubTab === 'inventory'
-              ? 'bg-indigo-600 text-white shadow-sm'
-              : 'text-slate-600 hover:bg-slate-100'
+              ? 'bg-indigo-600 text-white shadow-sm shadow-indigo-950/50'
+              : 'text-slate-400 hover:text-white hover:bg-slate-800/80'
           }`}
         >
           Manage Inventory & Products ({products.length})
@@ -280,8 +280,8 @@ export const AdminDashboard: React.FC = () => {
           onClick={() => setActiveSubTab('categories')}
           className={`px-4 py-2 text-xs font-bold rounded-xl transition-all ${
             activeSubTab === 'categories'
-              ? 'bg-indigo-600 text-white shadow-sm'
-              : 'text-slate-600 hover:bg-slate-100'
+              ? 'bg-indigo-600 text-white shadow-sm shadow-indigo-950/50'
+              : 'text-slate-400 hover:text-white hover:bg-slate-800/80'
           }`}
         >
           Product Categories ({categoriesList.length})
@@ -291,8 +291,8 @@ export const AdminDashboard: React.FC = () => {
           onClick={() => setActiveSubTab('teams')}
           className={`px-4 py-2 text-xs font-bold rounded-xl transition-all ${
             activeSubTab === 'teams'
-              ? 'bg-indigo-600 text-white shadow-sm'
-              : 'text-slate-600 hover:bg-slate-100'
+              ? 'bg-indigo-600 text-white shadow-sm shadow-indigo-950/50'
+              : 'text-slate-400 hover:text-white hover:bg-slate-800/80'
           }`}
         >
           Teams & Budgets ({teams.length})
@@ -302,8 +302,8 @@ export const AdminDashboard: React.FC = () => {
           onClick={() => setActiveSubTab('ledger')}
           className={`px-4 py-2 text-xs font-bold rounded-xl transition-all ${
             activeSubTab === 'ledger'
-              ? 'bg-indigo-600 text-white shadow-sm'
-              : 'text-slate-600 hover:bg-slate-100'
+              ? 'bg-indigo-600 text-white shadow-sm shadow-indigo-950/50'
+              : 'text-slate-400 hover:text-white hover:bg-slate-800/80'
           }`}
         >
           All Purchases ({allPurchases.length})
@@ -313,8 +313,8 @@ export const AdminDashboard: React.FC = () => {
           onClick={() => setActiveSubTab('lowstock')}
           className={`px-4 py-2 text-xs font-bold rounded-xl transition-all ${
             activeSubTab === 'lowstock'
-              ? 'bg-amber-600 text-white shadow-sm'
-              : 'text-slate-600 hover:bg-slate-100'
+              ? 'bg-amber-600 text-white shadow-sm shadow-amber-950/50'
+              : 'text-slate-400 hover:text-white hover:bg-slate-800/80'
           }`}
         >
           Low Stock Alerts ({lowStockProducts.length})
@@ -325,7 +325,7 @@ export const AdminDashboard: React.FC = () => {
       {activeSubTab === 'inventory' && (
         <div className="space-y-4">
           
-          <div className="bg-white p-3 rounded-xl border border-slate-200 flex items-center justify-between gap-3">
+          <div className="bg-slate-900 p-3 rounded-xl border border-slate-800 flex items-center justify-between gap-3 shadow-lg">
             <div className="flex items-center gap-2 flex-1">
               <Search className="w-4 h-4 text-slate-400 ml-1" />
               <input
@@ -333,23 +333,23 @@ export const AdminDashboard: React.FC = () => {
                 value={adminSearch}
                 onChange={(e) => setAdminSearch(e.target.value)}
                 placeholder="Search products by title, catalog #, brand, category..."
-                className="flex-1 bg-transparent text-xs sm:text-sm font-medium focus:outline-hidden"
+                className="flex-1 bg-transparent text-xs sm:text-sm font-medium text-white placeholder-slate-500 focus:outline-hidden"
               />
             </div>
             
             <button
               onClick={() => setIsAddModalOpen(true)}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-lg shadow-sm"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold rounded-lg shadow-sm transition-colors"
             >
               <Plus className="w-3.5 h-3.5" />
               Add Product
             </button>
           </div>
 
-          <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xs">
+          <div className="bg-slate-900 rounded-2xl border border-slate-800 overflow-hidden shadow-xl">
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs">
-                <thead className="bg-slate-50 text-slate-500 font-bold uppercase tracking-wider border-b border-slate-200">
+                <thead className="bg-slate-950 text-slate-400 font-bold uppercase tracking-wider border-b border-slate-800">
                   <tr>
                     <th className="px-4 py-3.5">Product</th>
                     <th className="px-4 py-3.5">Category</th>
@@ -359,19 +359,19 @@ export const AdminDashboard: React.FC = () => {
                     <th className="px-4 py-3.5 text-right">Actions</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-100 text-slate-800">
+                <tbody className="divide-y divide-slate-800 text-slate-200">
                   {filteredProducts.map(prod => (
-                    <tr key={prod.id} className="hover:bg-slate-50/70 transition-colors">
+                    <tr key={prod.id} className="hover:bg-slate-800/50 transition-colors">
                       <td className="px-4 py-3">
                         <div className="flex items-center gap-3">
                           <img
                             src={prod.image_url}
                             alt=""
-                            className="w-10 h-10 rounded-lg object-cover bg-slate-100 border border-slate-200 shrink-0"
+                            className="w-10 h-10 rounded-lg object-cover bg-slate-950 border border-slate-800 shrink-0"
                           />
                           <div>
-                            <p className="font-bold text-slate-900 text-xs sm:text-sm">{prod.name}</p>
-                            <span className="text-[10px] text-slate-500 font-mono">
+                            <p className="font-bold text-white text-xs sm:text-sm">{prod.name}</p>
+                            <span className="text-[10px] text-slate-400 font-mono">
                               Cat #{prod.catalog_number} • {prod.manufacturer}
                             </span>
                           </div>
@@ -379,22 +379,22 @@ export const AdminDashboard: React.FC = () => {
                       </td>
 
                       <td className="px-4 py-3 whitespace-nowrap">
-                        <span className="bg-slate-100 text-slate-700 px-2 py-0.5 rounded text-[11px] font-semibold">
+                        <span className="bg-slate-800 text-slate-300 border border-slate-700/60 px-2 py-0.5 rounded text-[11px] font-semibold">
                           {prod.category}
                         </span>
                       </td>
 
-                      <td className="px-4 py-3 font-bold text-slate-900 whitespace-nowrap">
+                      <td className="px-4 py-3 font-bold text-white whitespace-nowrap">
                         {formatCurrency(prod.price)} <span className="text-[10px] text-slate-400 font-normal">/{prod.unit_of_sale}</span>
                       </td>
 
                       <td className="px-4 py-3 whitespace-nowrap">
-                        <span className={`font-black text-xs px-2.5 py-1 rounded-md ${
+                        <span className={`font-black text-xs px-2.5 py-1 rounded-md border ${
                           prod.stock_quantity === 0
-                            ? 'bg-rose-100 text-rose-800'
+                            ? 'bg-rose-950/70 text-rose-300 border-rose-800/60'
                             : prod.stock_quantity <= 5
-                            ? 'bg-amber-100 text-amber-800'
-                            : 'bg-emerald-100 text-emerald-800'
+                            ? 'bg-amber-950/70 text-amber-300 border-amber-800/60'
+                            : 'bg-emerald-950/70 text-emerald-300 border-emerald-800/60'
                         }`}>
                           {prod.stock_quantity} units
                         </span>
@@ -405,8 +405,8 @@ export const AdminDashboard: React.FC = () => {
                           onClick={() => updateProduct({ id: prod.id, active: !prod.active })}
                           className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider transition-colors ${
                             prod.active
-                              ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
-                              : 'bg-slate-100 text-slate-500 border border-slate-200'
+                              ? 'bg-emerald-950/60 text-emerald-300 border border-emerald-800/60'
+                              : 'bg-slate-800 text-slate-400 border border-slate-700'
                           }`}
                         >
                           {prod.active ? <Eye className="w-3 h-3" /> : <EyeOff className="w-3 h-3" />}
@@ -418,7 +418,7 @@ export const AdminDashboard: React.FC = () => {
                         <div className="flex items-center justify-end gap-1.5">
                           <button
                             onClick={() => setEditingProduct(prod)}
-                            className="px-2.5 py-1.5 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-xs font-bold inline-flex items-center gap-1 transition-colors"
+                            className="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-indigo-300 hover:text-white border border-slate-700/60 text-xs font-bold inline-flex items-center gap-1 transition-colors"
                             title="Edit Product"
                           >
                             <Edit className="w-3.5 h-3.5" />
@@ -427,7 +427,7 @@ export const AdminDashboard: React.FC = () => {
 
                           <button
                             onClick={() => setDeletingProduct(prod)}
-                            className="px-2.5 py-1.5 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 text-xs font-bold inline-flex items-center gap-1 transition-colors"
+                            className="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-rose-950/60 text-rose-400 hover:text-rose-200 border border-slate-700/60 text-xs font-bold inline-flex items-center gap-1 transition-colors"
                             title="Delete Product"
                           >
                             <Trash2 className="w-3.5 h-3.5" />
@@ -454,24 +454,24 @@ export const AdminDashboard: React.FC = () => {
               const totalStock = products.filter(p => p.category === cat).reduce((acc, p) => acc + p.stock_quantity, 0);
 
               return (
-                <div key={cat} className="bg-white rounded-2xl border border-slate-200 p-5 shadow-xs space-y-3">
+                <div key={cat} className="bg-slate-900 rounded-2xl border border-slate-800 p-5 shadow-xl space-y-3">
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold uppercase tracking-wider text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded">
+                    <span className="text-xs font-bold uppercase tracking-wider text-indigo-400 bg-indigo-950/80 border border-indigo-800/60 px-2 py-0.5 rounded">
                       Category
                     </span>
                     <Layers className="w-4 h-4 text-slate-400" />
                   </div>
 
-                  <h3 className="text-base font-bold text-slate-900 leading-snug">{cat}</h3>
+                  <h3 className="text-base font-bold text-white leading-snug">{cat}</h3>
 
-                  <div className="bg-slate-50 p-3 rounded-xl border border-slate-100 text-xs space-y-1">
+                  <div className="bg-slate-950 p-3 rounded-xl border border-slate-800 text-xs space-y-1">
                     <div className="flex justify-between">
-                      <span className="text-slate-500">Products in Catalog:</span>
-                      <strong className="text-slate-800">{count} items</strong>
+                      <span className="text-slate-400">Products in Catalog:</span>
+                      <strong className="text-slate-200">{count} items</strong>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-slate-500">Total Units in Stock:</span>
-                      <strong className="text-slate-800">{totalStock} units</strong>
+                      <span className="text-slate-400">Total Units in Stock:</span>
+                      <strong className="text-slate-200">{totalStock} units</strong>
                     </div>
                   </div>
 
@@ -480,7 +480,7 @@ export const AdminDashboard: React.FC = () => {
                       setAdminSearch(cat);
                       setActiveSubTab('inventory');
                     }}
-                    className="w-full py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl transition-colors text-center"
+                    className="w-full py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white border border-slate-700/60 font-bold text-xs rounded-xl transition-colors text-center"
                   >
                     View Products in {cat.split(' ')[0]}
                   </button>
@@ -494,14 +494,14 @@ export const AdminDashboard: React.FC = () => {
       {/* SUB-TAB 3: Manage Teams & Budgets */}
       {activeSubTab === 'teams' && (
         <div className="space-y-4">
-          <div className="flex items-center justify-between bg-white p-4 rounded-2xl border border-slate-200">
+          <div className="flex items-center justify-between bg-slate-900 p-4 rounded-2xl border border-slate-800 shadow-xl">
             <div>
-              <h3 className="text-sm font-bold text-slate-900">Registered Contestant Teams</h3>
-              <p className="text-xs text-slate-500">Contestants can purchase only using their assigned team's credits.</p>
+              <h3 className="text-sm font-bold text-white">Registered Contestant Teams</h3>
+              <p className="text-xs text-slate-400">Contestants can purchase only using their assigned team's credits.</p>
             </div>
             <button
               onClick={() => setIsNewTeamModalOpen(true)}
-              className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-sky-600 hover:bg-sky-700 text-white rounded-xl text-xs font-bold transition-all shadow-sm"
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-sky-600 hover:bg-sky-500 text-white rounded-xl text-xs font-bold transition-all shadow-sm"
             >
               <Plus className="w-3.5 h-3.5" />
               Register New Team
@@ -514,25 +514,25 @@ export const AdminDashboard: React.FC = () => {
               const percentUsed = Math.min(100, Math.round((spent / team.initial_budget) * 100));
 
               return (
-                <div key={team.id} className="bg-white rounded-2xl border border-slate-200 p-5 shadow-xs space-y-3">
+                <div key={team.id} className="bg-slate-900 rounded-2xl border border-slate-800 p-5 shadow-xl space-y-3">
                   <div className="flex items-start justify-between">
                     <div>
                       <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Contestant Team</span>
-                      <h3 className="text-base font-bold text-slate-900">{team.name}</h3>
+                      <h3 className="text-base font-bold text-white">{team.name}</h3>
                     </div>
-                    <Users className="w-5 h-5 text-sky-600" />
+                    <Users className="w-5 h-5 text-sky-400" />
                   </div>
 
-                  <div className="bg-slate-50 p-3 rounded-xl border border-slate-100 space-y-1.5 text-xs">
+                  <div className="bg-slate-950 p-3 rounded-xl border border-slate-800 space-y-1.5 text-xs">
                     <div className="flex justify-between">
-                      <span className="text-slate-500">Initial Allocation:</span>
-                      <span className="font-bold text-slate-800">{formatCurrency(team.initial_budget)}</span>
+                      <span className="text-slate-400">Initial Allocation:</span>
+                      <span className="font-bold text-slate-200">{formatCurrency(team.initial_budget)}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-slate-500">Spent to Date:</span>
-                      <span className="font-bold text-slate-800">{formatCurrency(spent)} ({percentUsed}%)</span>
+                      <span className="text-slate-400">Spent to Date:</span>
+                      <span className="font-bold text-slate-200">{formatCurrency(spent)} ({percentUsed}%)</span>
                     </div>
-                    <div className="flex justify-between pt-1 border-t border-slate-200 text-emerald-700 font-bold">
+                    <div className="flex justify-between pt-1 border-t border-slate-800 text-emerald-400 font-bold">
                       <span>Remaining Balance:</span>
                       <span className="text-sm">{formatCurrency(team.remaining_balance)}</span>
                     </div>
@@ -543,7 +543,7 @@ export const AdminDashboard: React.FC = () => {
                       setBudgetModalTeam(team);
                       setNewBudgetAmount(team.remaining_balance + 5000);
                     }}
-                    className="w-full py-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-bold text-xs rounded-xl transition-colors flex items-center justify-center gap-1.5"
+                    className="w-full py-2 bg-indigo-950/60 hover:bg-indigo-900 text-indigo-300 hover:text-white border border-indigo-800/60 font-bold text-xs rounded-xl transition-colors flex items-center justify-center gap-1.5"
                   >
                     <Wallet className="w-3.5 h-3.5" />
                     Adjust Team Budget
@@ -557,20 +557,20 @@ export const AdminDashboard: React.FC = () => {
 
       {/* SUB-TAB 4: View All Purchases */}
       {activeSubTab === 'ledger' && (
-        <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xs">
-          <div className="p-4 border-b border-slate-200 flex justify-between items-center">
+        <div className="bg-slate-900 rounded-2xl border border-slate-800 overflow-hidden shadow-xl">
+          <div className="p-4 border-b border-slate-800 flex justify-between items-center">
             <div>
-              <h3 className="text-sm font-bold text-slate-900">Global Purchase Audit Ledger</h3>
-              <p className="text-xs text-slate-500">Audit trail of all purchases executed across all contestant teams.</p>
+              <h3 className="text-sm font-bold text-white">Global Purchase Audit Ledger</h3>
+              <p className="text-xs text-slate-400">Audit trail of all purchases executed across all contestant teams.</p>
             </div>
-            <span className="text-xs font-bold text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-full">
+            <span className="text-xs font-bold text-indigo-300 bg-indigo-950 border border-indigo-800/60 px-2.5 py-1 rounded-full">
               {allPurchases.length} Total Transactions
             </span>
           </div>
 
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead className="bg-slate-50 text-slate-500 font-bold uppercase tracking-wider border-b border-slate-200">
+              <thead className="bg-slate-950 text-slate-400 font-bold uppercase tracking-wider border-b border-slate-800">
                 <tr>
                   <th className="px-4 py-3.5">Team</th>
                   <th className="px-4 py-3.5">Product Snapshot</th>
@@ -581,7 +581,7 @@ export const AdminDashboard: React.FC = () => {
                   <th className="px-4 py-3.5">Transaction ID</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100 text-slate-800">
+              <tbody className="divide-y divide-slate-800 text-slate-200">
                 {allPurchases.length === 0 ? (
                   <tr>
                     <td colSpan={7} className="px-4 py-8 text-center text-slate-400">
@@ -590,13 +590,13 @@ export const AdminDashboard: React.FC = () => {
                   </tr>
                 ) : (
                   allPurchases.map(p => (
-                    <tr key={p.id} className="hover:bg-slate-50">
-                      <td className="px-4 py-3 font-bold text-slate-900">{p.team_name || 'Lab Team'}</td>
-                      <td className="px-4 py-3 font-semibold">{p.product_name_snapshot}</td>
-                      <td className="px-4 py-3 text-center font-bold">{p.quantity}</td>
-                      <td className="px-4 py-3">{formatCurrency(p.unit_price_snapshot)}</td>
-                      <td className="px-4 py-3 font-black text-emerald-700">{formatCurrency(p.total_amount)}</td>
-                      <td className="px-4 py-3 text-slate-500 whitespace-nowrap">
+                    <tr key={p.id} className="hover:bg-slate-800/50">
+                      <td className="px-4 py-3 font-bold text-white">{p.team_name || 'Lab Team'}</td>
+                      <td className="px-4 py-3 font-semibold text-slate-200">{p.product_name_snapshot}</td>
+                      <td className="px-4 py-3 text-center font-bold text-slate-200">{p.quantity}</td>
+                      <td className="px-4 py-3 text-slate-300">{formatCurrency(p.unit_price_snapshot)}</td>
+                      <td className="px-4 py-3 font-black text-emerald-400">{formatCurrency(p.total_amount)}</td>
+                      <td className="px-4 py-3 text-slate-400 whitespace-nowrap">
                         {new Date(p.created_at).toLocaleString('en-IN', {
                           day: '2-digit',
                           month: 'short',
@@ -604,7 +604,7 @@ export const AdminDashboard: React.FC = () => {
                           minute: '2-digit'
                         })}
                       </td>
-                      <td className="px-4 py-3 font-mono text-[10px] text-slate-600 whitespace-nowrap">{p.transaction_id}</td>
+                      <td className="px-4 py-3 font-mono text-[10px] text-slate-400 whitespace-nowrap">{p.transaction_id}</td>
                     </tr>
                   ))
                 )}
@@ -617,18 +617,18 @@ export const AdminDashboard: React.FC = () => {
       {/* SUB-TAB 5: Low Stock Alerts */}
       {activeSubTab === 'lowstock' && (
         <div className="space-y-4">
-          <div className="bg-amber-50 border border-amber-200 text-amber-900 rounded-2xl p-4 text-xs flex items-center justify-between">
+          <div className="bg-amber-950/40 border border-amber-800/60 text-amber-200 rounded-2xl p-4 text-xs flex items-center justify-between">
             <div className="flex items-center gap-2.5">
-              <AlertTriangle className="w-5 h-5 text-amber-600 shrink-0" />
+              <AlertTriangle className="w-5 h-5 text-amber-400 shrink-0" />
               <div>
                 <strong>Low Stock Notice:</strong> The following items have 5 or fewer units remaining across all research teams. Replenish stock to avoid lab work disruption.
               </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xs">
+          <div className="bg-slate-900 rounded-2xl border border-slate-800 overflow-hidden shadow-xl">
             <table className="w-full text-left text-xs">
-              <thead className="bg-slate-50 text-slate-500 font-bold uppercase tracking-wider border-b border-slate-200">
+              <thead className="bg-slate-950 text-slate-400 font-bold uppercase tracking-wider border-b border-slate-800">
                 <tr>
                   <th className="px-4 py-3.5">Product Name</th>
                   <th className="px-4 py-3.5">Category</th>
@@ -637,20 +637,20 @@ export const AdminDashboard: React.FC = () => {
                   <th className="px-4 py-3.5 text-right">Quick Restock</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100 text-slate-800">
+              <tbody className="divide-y divide-slate-800 text-slate-200">
                 {lowStockProducts.map(p => (
-                  <tr key={p.id} className="hover:bg-slate-50">
-                    <td className="px-4 py-3 font-bold text-slate-900">
+                  <tr key={p.id} className="hover:bg-slate-800/50">
+                    <td className="px-4 py-3 font-bold text-white">
                       {p.name}
                       <span className="block text-[10px] text-slate-400 font-normal">Cat #{p.catalog_number}</span>
                     </td>
-                    <td className="px-4 py-3">{p.category}</td>
-                    <td className="px-4 py-3 font-black text-amber-600">{p.stock_quantity} units</td>
-                    <td className="px-4 py-3 font-bold">{formatCurrency(p.price)}</td>
+                    <td className="px-4 py-3 text-slate-300">{p.category}</td>
+                    <td className="px-4 py-3 font-black text-amber-400">{p.stock_quantity} units</td>
+                    <td className="px-4 py-3 font-bold text-white">{formatCurrency(p.price)}</td>
                     <td className="px-4 py-3 text-right">
                       <button
                         onClick={() => updateProduct({ id: p.id, stock_quantity: p.stock_quantity + 20 })}
-                        className="px-3 py-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold transition-colors shadow-2xs"
+                        className="px-3 py-1 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-bold transition-colors shadow-2xs"
                       >
                         +20 Restock
                       </button>
@@ -666,46 +666,46 @@ export const AdminDashboard: React.FC = () => {
       {/* MODAL 1: Edit Product Modal */}
       {editingProduct && (
         <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto">
-          <div className="bg-white rounded-3xl max-w-lg w-full p-6 space-y-4 shadow-2xl border border-slate-200">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-200">
-              <h3 className="text-base font-bold text-slate-900">Edit Product: {editingProduct.name}</h3>
-              <button onClick={() => setEditingProduct(null)} className="p-1 text-slate-400 hover:text-slate-700">
+          <div className="bg-slate-900 rounded-3xl max-w-lg w-full p-6 space-y-4 shadow-2xl border border-slate-800">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-800">
+              <h3 className="text-base font-bold text-white">Edit Product: {editingProduct.name}</h3>
+              <button onClick={() => setEditingProduct(null)} className="p-1 text-slate-400 hover:text-white transition-colors">
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             <form onSubmit={handleSaveEditProduct} className="space-y-3 text-xs">
               <div>
-                <label className="block font-bold text-slate-700 uppercase tracking-wider mb-1">Product Name</label>
+                <label className="block font-bold text-slate-300 uppercase tracking-wider mb-1">Product Name</label>
                 <input
                   type="text"
                   value={editingProduct.name}
                   onChange={(e) => setEditingProduct({ ...editingProduct, name: e.target.value })}
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl"
+                  className="w-full px-3 py-2 bg-slate-950 border border-slate-800 text-slate-100 placeholder-slate-500 rounded-xl focus:border-indigo-500 focus:outline-hidden"
                   required
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block font-bold text-slate-700 uppercase tracking-wider mb-1">Price (₹)</label>
+                  <label className="block font-bold text-slate-300 uppercase tracking-wider mb-1">Price (₹)</label>
                   <input
                     type="number"
                     value={editingProduct.price}
                     onChange={(e) => setEditingProduct({ ...editingProduct, price: Number(e.target.value) })}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl"
+                    className="w-full px-3 py-2 bg-slate-950 border border-slate-800 text-slate-100 placeholder-slate-500 rounded-xl focus:border-indigo-500 focus:outline-hidden"
                     min="0"
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="block font-bold text-slate-700 uppercase tracking-wider mb-1">Stock Quantity</label>
+                  <label className="block font-bold text-slate-300 uppercase tracking-wider mb-1">Stock Quantity</label>
                   <input
                     type="number"
                     value={editingProduct.stock_quantity}
                     onChange={(e) => setEditingProduct({ ...editingProduct, stock_quantity: Number(e.target.value) })}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl"
+                    className="w-full px-3 py-2 bg-slate-950 border border-slate-800 text-slate-100 placeholder-slate-500 rounded-xl focus:border-indigo-500 focus:outline-hidden"
                     min="0"
                     required
                   />
@@ -713,34 +713,34 @@ export const AdminDashboard: React.FC = () => {
               </div>
 
               <div>
-                <label className="block font-bold text-slate-700 uppercase tracking-wider mb-1">Unit of Sale</label>
+                <label className="block font-bold text-slate-300 uppercase tracking-wider mb-1">Unit of Sale</label>
                 <input
                   type="text"
                   value={editingProduct.unit_of_sale}
                   onChange={(e) => setEditingProduct({ ...editingProduct, unit_of_sale: e.target.value })}
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl"
+                  className="w-full px-3 py-2 bg-slate-950 border border-slate-800 text-slate-100 placeholder-slate-500 rounded-xl focus:border-indigo-500 focus:outline-hidden"
                   required
                 />
               </div>
 
               <div>
-                <label className="block font-bold text-slate-700 uppercase tracking-wider mb-1">Image URL</label>
+                <label className="block font-bold text-slate-300 uppercase tracking-wider mb-1">Image URL</label>
                 <input
                   type="url"
                   value={editingProduct.image_url}
                   onChange={(e) => setEditingProduct({ ...editingProduct, image_url: e.target.value })}
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl font-mono text-[11px]"
+                  className="w-full px-3 py-2 bg-slate-950 border border-slate-800 text-slate-100 placeholder-slate-500 rounded-xl font-mono text-[11px] focus:border-indigo-500 focus:outline-hidden"
                   required
                 />
               </div>
 
               <div>
-                <label className="block font-bold text-slate-700 uppercase tracking-wider mb-1">Description</label>
+                <label className="block font-bold text-slate-300 uppercase tracking-wider mb-1">Description</label>
                 <textarea
                   rows={2}
                   value={editingProduct.description}
                   onChange={(e) => setEditingProduct({ ...editingProduct, description: e.target.value })}
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl"
+                  className="w-full px-3 py-2 bg-slate-950 border border-slate-800 text-slate-100 placeholder-slate-500 rounded-xl focus:border-indigo-500 focus:outline-hidden"
                 />
               </div>
 
@@ -748,13 +748,13 @@ export const AdminDashboard: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setEditingProduct(null)}
-                  className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-xl"
+                  className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white font-semibold rounded-xl border border-slate-700 transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-md"
+                  className="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl shadow-md transition-colors"
                 >
                   Save Changes
                 </button>
@@ -767,33 +767,33 @@ export const AdminDashboard: React.FC = () => {
       {/* MODAL 2: Delete Product Confirmation Modal */}
       {deletingProduct && (
         <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto">
-          <div className="bg-white rounded-3xl max-w-md w-full p-6 space-y-4 shadow-2xl border border-slate-200">
-            <div className="flex items-center gap-3 text-rose-600">
-              <div className="w-10 h-10 rounded-xl bg-rose-100 flex items-center justify-center">
-                <Trash2 className="w-5 h-5" />
+          <div className="bg-slate-900 rounded-3xl max-w-md w-full p-6 space-y-4 shadow-2xl border border-slate-800">
+            <div className="flex items-center gap-3 text-rose-400">
+              <div className="w-10 h-10 rounded-xl bg-rose-950/80 border border-rose-800/60 flex items-center justify-center">
+                <Trash2 className="w-5 h-5 text-rose-400" />
               </div>
               <div>
-                <h3 className="text-base font-bold text-slate-900">Delete Product</h3>
-                <p className="text-xs text-slate-500">Catalog Removal</p>
+                <h3 className="text-base font-bold text-white">Delete Product</h3>
+                <p className="text-xs text-slate-400">Catalog Removal</p>
               </div>
             </div>
 
-            <p className="text-xs text-slate-600 leading-relaxed">
-              Are you sure you want to delete <strong>{deletingProduct.name}</strong> (Cat #{deletingProduct.catalog_number}) from the BioBuy catalog? This item will no longer be available for contestant procurement.
+            <p className="text-xs text-slate-300 leading-relaxed">
+              Are you sure you want to delete <strong className="text-white font-bold">{deletingProduct.name}</strong> (Cat #{deletingProduct.catalog_number}) from the BioBuy catalog? This item will no longer be available for contestant procurement.
             </p>
 
             <div className="pt-2 flex justify-end gap-2">
               <button
                 type="button"
                 onClick={() => setDeletingProduct(null)}
-                className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-xl text-xs"
+                className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white font-semibold rounded-xl text-xs border border-slate-700 transition-colors"
               >
                 Cancel
               </button>
               <button
                 type="button"
                 onClick={handleConfirmDelete}
-                className="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white font-bold rounded-xl shadow-md text-xs"
+                className="px-4 py-2 bg-rose-600 hover:bg-rose-500 text-white font-bold rounded-xl shadow-md text-xs transition-colors"
               >
                 Yes, Delete Product
               </button>
@@ -805,49 +805,49 @@ export const AdminDashboard: React.FC = () => {
       {/* MODAL 3: Add Product Modal */}
       {isAddModalOpen && (
         <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto">
-          <div className="bg-white rounded-3xl max-w-lg w-full p-6 space-y-4 shadow-2xl border border-slate-200">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-200">
-              <h3 className="text-base font-bold text-slate-900">Add New Biotechnology Product</h3>
-              <button onClick={() => setIsAddModalOpen(false)} className="p-1 text-slate-400 hover:text-slate-700">
+          <div className="bg-slate-900 rounded-3xl max-w-lg w-full p-6 space-y-4 shadow-2xl border border-slate-800">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-800">
+              <h3 className="text-base font-bold text-white">Add New Biotechnology Product</h3>
+              <button onClick={() => setIsAddModalOpen(false)} className="p-1 text-slate-400 hover:text-white transition-colors">
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             <form onSubmit={handleCreateProduct} className="space-y-3 text-xs">
               <div>
-                <label className="block font-bold text-slate-700 uppercase tracking-wider mb-1">Product Name</label>
+                <label className="block font-bold text-slate-300 uppercase tracking-wider mb-1">Product Name</label>
                 <input
                   type="text"
                   placeholder="e.g. TaqPolymerase High Fidelity 500U"
                   value={newProdData.name}
                   onChange={(e) => setNewProdData({ ...newProdData, name: e.target.value })}
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl"
+                  className="w-full px-3 py-2 bg-slate-950 border border-slate-800 text-slate-100 placeholder-slate-500 rounded-xl focus:border-indigo-500 focus:outline-hidden"
                   required
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block font-bold text-slate-700 uppercase tracking-wider mb-1">Category</label>
+                  <label className="block font-bold text-slate-300 uppercase tracking-wider mb-1">Category</label>
                   <select
                     value={newProdData.category}
                     onChange={(e) => setNewProdData({ ...newProdData, category: e.target.value as ProductCategory })}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl"
+                    className="w-full px-3 py-2 bg-slate-950 border border-slate-800 text-slate-100 rounded-xl focus:border-indigo-500 focus:outline-hidden"
                   >
                     {categoriesList.map(c => (
-                      <option key={c} value={c}>{c}</option>
+                      <option key={c} value={c} className="bg-slate-900 text-slate-100">{c}</option>
                     ))}
                   </select>
                 </div>
 
                 <div>
-                  <label className="block font-bold text-slate-700 uppercase tracking-wider mb-1">Catalog #</label>
+                  <label className="block font-bold text-slate-300 uppercase tracking-wider mb-1">Catalog #</label>
                   <input
                     type="text"
                     placeholder="e.g. BT-TAQ-500"
                     value={newProdData.catalog_number}
                     onChange={(e) => setNewProdData({ ...newProdData, catalog_number: e.target.value })}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl font-mono uppercase"
+                    className="w-full px-3 py-2 bg-slate-950 border border-slate-800 text-slate-100 placeholder-slate-500 rounded-xl font-mono uppercase focus:border-indigo-500 focus:outline-hidden"
                     required
                   />
                 </div>
@@ -855,60 +855,60 @@ export const AdminDashboard: React.FC = () => {
 
               <div className="grid grid-cols-3 gap-3">
                 <div>
-                  <label className="block font-bold text-slate-700 uppercase tracking-wider mb-1">Price (₹)</label>
+                  <label className="block font-bold text-slate-300 uppercase tracking-wider mb-1">Price (₹)</label>
                   <input
                     type="number"
                     value={newProdData.price}
                     onChange={(e) => setNewProdData({ ...newProdData, price: Number(e.target.value) })}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl"
+                    className="w-full px-3 py-2 bg-slate-950 border border-slate-800 text-slate-100 placeholder-slate-500 rounded-xl focus:border-indigo-500 focus:outline-hidden"
                     min="1"
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="block font-bold text-slate-700 uppercase tracking-wider mb-1">Stock</label>
+                  <label className="block font-bold text-slate-300 uppercase tracking-wider mb-1">Stock</label>
                   <input
                     type="number"
                     value={newProdData.stock_quantity}
                     onChange={(e) => setNewProdData({ ...newProdData, stock_quantity: Number(e.target.value) })}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl"
+                    className="w-full px-3 py-2 bg-slate-950 border border-slate-800 text-slate-100 placeholder-slate-500 rounded-xl focus:border-indigo-500 focus:outline-hidden"
                     min="1"
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="block font-bold text-slate-700 uppercase tracking-wider mb-1">Unit of Sale</label>
+                  <label className="block font-bold text-slate-300 uppercase tracking-wider mb-1">Unit of Sale</label>
                   <input
                     type="text"
                     placeholder="e.g. Kit / Box"
                     value={newProdData.unit_of_sale}
                     onChange={(e) => setNewProdData({ ...newProdData, unit_of_sale: e.target.value })}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl"
+                    className="w-full px-3 py-2 bg-slate-950 border border-slate-800 text-slate-100 placeholder-slate-500 rounded-xl focus:border-indigo-500 focus:outline-hidden"
                     required
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block font-bold text-slate-700 uppercase tracking-wider mb-1">Manufacturer</label>
+                <label className="block font-bold text-slate-300 uppercase tracking-wider mb-1">Manufacturer</label>
                 <input
                   type="text"
                   value={newProdData.manufacturer}
                   onChange={(e) => setNewProdData({ ...newProdData, manufacturer: e.target.value })}
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl"
+                  className="w-full px-3 py-2 bg-slate-950 border border-slate-800 text-slate-100 placeholder-slate-500 rounded-xl focus:border-indigo-500 focus:outline-hidden"
                   required
                 />
               </div>
 
               <div>
-                <label className="block font-bold text-slate-700 uppercase tracking-wider mb-1">Description</label>
+                <label className="block font-bold text-slate-300 uppercase tracking-wider mb-1">Description</label>
                 <textarea
                   rows={2}
                   value={newProdData.description}
                   onChange={(e) => setNewProdData({ ...newProdData, description: e.target.value })}
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl"
+                  className="w-full px-3 py-2 bg-slate-950 border border-slate-800 text-slate-100 placeholder-slate-500 rounded-xl focus:border-indigo-500 focus:outline-hidden"
                   placeholder="Technical description of research reagent / equipment"
                 />
               </div>
@@ -917,13 +917,13 @@ export const AdminDashboard: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setIsAddModalOpen(false)}
-                  className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-xl"
+                  className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white font-semibold rounded-xl border border-slate-700 transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-md"
+                  className="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl shadow-md transition-colors"
                 >
                   Create Product
                 </button>
@@ -936,39 +936,39 @@ export const AdminDashboard: React.FC = () => {
       {/* MODAL 4: Adjust Team Budget Modal */}
       {budgetModalTeam && (
         <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto">
-          <div className="bg-white rounded-3xl max-w-md w-full p-6 space-y-4 shadow-2xl border border-slate-200">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-200">
-              <h3 className="text-base font-bold text-slate-900">Adjust Team Budget</h3>
-              <button onClick={() => setBudgetModalTeam(null)} className="p-1 text-slate-400 hover:text-slate-700">
+          <div className="bg-slate-900 rounded-3xl max-w-md w-full p-6 space-y-4 shadow-2xl border border-slate-800">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-800">
+              <h3 className="text-base font-bold text-white">Adjust Team Budget</h3>
+              <button onClick={() => setBudgetModalTeam(null)} className="p-1 text-slate-400 hover:text-white transition-colors">
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             <form onSubmit={handleAdjustBudgetSubmit} className="space-y-3 text-xs">
-              <p className="text-slate-600">
-                Adjusting balance for: <strong>{budgetModalTeam.name}</strong>
+              <p className="text-slate-300">
+                Adjusting balance for: <strong className="text-white font-bold">{budgetModalTeam.name}</strong>
               </p>
 
               <div>
-                <label className="block font-bold text-slate-700 uppercase tracking-wider mb-1">New Balance Amount (₹)</label>
+                <label className="block font-bold text-slate-300 uppercase tracking-wider mb-1">New Balance Amount (₹)</label>
                 <input
                   type="number"
                   value={newBudgetAmount}
                   onChange={(e) => setNewBudgetAmount(Number(e.target.value))}
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-base font-bold text-emerald-700"
+                  className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-base font-bold text-emerald-400 focus:border-indigo-500 focus:outline-hidden"
                   min="0"
                   required
                 />
               </div>
 
               <div>
-                <label className="block font-bold text-slate-700 uppercase tracking-wider mb-1">Reason / Grant Ref</label>
+                <label className="block font-bold text-slate-300 uppercase tracking-wider mb-1">Reason / Grant Ref</label>
                 <input
                   type="text"
                   value={budgetReason}
                   onChange={(e) => setBudgetReason(e.target.value)}
                   placeholder="e.g. Additional Research Grant Phase 2"
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl"
+                  className="w-full px-3 py-2 bg-slate-950 border border-slate-800 text-slate-100 placeholder-slate-500 rounded-xl focus:border-indigo-500 focus:outline-hidden"
                   required
                 />
               </div>
@@ -977,13 +977,13 @@ export const AdminDashboard: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setBudgetModalTeam(null)}
-                  className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-xl"
+                  className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white font-semibold rounded-xl border border-slate-700 transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-md"
+                  className="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl shadow-md transition-colors"
                 >
                   Confirm Budget Update
                 </button>
@@ -996,34 +996,34 @@ export const AdminDashboard: React.FC = () => {
       {/* MODAL 5: Register New Team Modal */}
       {isNewTeamModalOpen && (
         <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto">
-          <div className="bg-white rounded-3xl max-w-md w-full p-6 space-y-4 shadow-2xl border border-slate-200">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-200">
-              <h3 className="text-base font-bold text-slate-900">Register Contestant Team</h3>
-              <button onClick={() => setIsNewTeamModalOpen(false)} className="p-1 text-slate-400 hover:text-slate-700">
+          <div className="bg-slate-900 rounded-3xl max-w-md w-full p-6 space-y-4 shadow-2xl border border-slate-800">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-800">
+              <h3 className="text-base font-bold text-white">Register Contestant Team</h3>
+              <button onClick={() => setIsNewTeamModalOpen(false)} className="p-1 text-slate-400 hover:text-white transition-colors">
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             <form onSubmit={handleCreateTeamSubmit} className="space-y-3 text-xs">
               <div>
-                <label className="block font-bold text-slate-700 uppercase tracking-wider mb-1">Team Name</label>
+                <label className="block font-bold text-slate-300 uppercase tracking-wider mb-1">Team Name</label>
                 <input
                   type="text"
                   placeholder="e.g. Team Delta (Synthetic Biology)"
                   value={newTeamName}
                   onChange={(e) => setNewTeamName(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl font-medium"
+                  className="w-full px-3 py-2 bg-slate-950 border border-slate-800 text-slate-100 placeholder-slate-500 rounded-xl font-medium focus:border-sky-500 focus:outline-hidden"
                   required
                 />
               </div>
 
               <div>
-                <label className="block font-bold text-slate-700 uppercase tracking-wider mb-1">Initial Virtual Budget (₹)</label>
+                <label className="block font-bold text-slate-300 uppercase tracking-wider mb-1">Initial Virtual Budget (₹)</label>
                 <input
                   type="number"
                   value={newTeamBudget}
                   onChange={(e) => setNewTeamBudget(Number(e.target.value))}
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl font-bold"
+                  className="w-full px-3 py-2 bg-slate-950 border border-slate-800 text-slate-100 rounded-xl font-bold focus:border-sky-500 focus:outline-hidden"
                   min="1000"
                   required
                 />
@@ -1033,13 +1033,13 @@ export const AdminDashboard: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setIsNewTeamModalOpen(false)}
-                  className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-xl"
+                  className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white font-semibold rounded-xl border border-slate-700 transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-sky-600 hover:bg-sky-700 text-white font-bold rounded-xl shadow-md"
+                  className="px-4 py-2 bg-sky-600 hover:bg-sky-500 text-white font-bold rounded-xl shadow-md transition-colors"
                 >
                   Register Team
                 </button>
