@@ -377,7 +377,27 @@ ON budget_transactions FOR SELECT
 USING (true);
 
 -- 11. SUPABASE REALTIME REPLICATION ENABLEMENT
--- Enable real-time updates for products and purchases
-ALTER PUBLICATION supabase_realtime ADD TABLE products;
-ALTER PUBLICATION supabase_realtime ADD TABLE purchases;
-ALTER PUBLICATION supabase_realtime ADD TABLE teams;
+-- Safely enable real-time updates for products, purchases, and teams
+DO $$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_publication_tables 
+        WHERE pubname = 'supabase_realtime' AND schemaname = 'public' AND tablename = 'products'
+    ) THEN
+        ALTER PUBLICATION supabase_realtime ADD TABLE products;
+    END IF;
+
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_publication_tables 
+        WHERE pubname = 'supabase_realtime' AND schemaname = 'public' AND tablename = 'purchases'
+    ) THEN
+        ALTER PUBLICATION supabase_realtime ADD TABLE purchases;
+    END IF;
+
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_publication_tables 
+        WHERE pubname = 'supabase_realtime' AND schemaname = 'public' AND tablename = 'teams'
+    ) THEN
+        ALTER PUBLICATION supabase_realtime ADD TABLE teams;
+    END IF;
+END $$;
