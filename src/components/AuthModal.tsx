@@ -77,7 +77,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess
   };
 
   // --- Register new team ---
-  const handleRegister = (e: React.FormEvent) => {
+  const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMsg('');
     if (!regTeam.trim()) {
@@ -96,7 +96,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess
       setErrorMsg('Passwords do not match.');
       return;
     }
-    const res = registerTeam(regTeam.trim(), regPass.trim(), regEmail.trim() || undefined);
+    const res = await registerTeam(regTeam.trim(), regPass.trim(), regEmail.trim() || undefined);
     if (res.success) handleSuccess();
     else setErrorMsg(res.message);
   };

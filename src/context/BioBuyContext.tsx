@@ -44,7 +44,7 @@ interface BioBuyContextType {
   } | null;
   // Auth Actions
   login: (identifier: string, password?: string) => AuthResult;
-  registerTeam: (teamName: string, password: string, email?: string) => AuthResult;
+  registerTeam: (teamName: string, password: string, email?: string) => Promise<AuthResult>;
   logout: () => void;
   // Filter & Search Actions
   setSearchQuery: (q: string) => void;
@@ -163,8 +163,8 @@ export const BioBuyProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     showCustomToast('info', 'Logged Out', 'You have been securely signed out of your session.');
   };
 
-  const registerTeam = (teamName: string, password: string, email?: string): AuthResult => {
-    const res = bioBuyStore.registerTeam(teamName, password, email);
+  const registerTeam = async (teamName: string, password: string, email?: string): Promise<AuthResult> => {
+    const res = await bioBuyStore.registerTeam(teamName, password, email);
     if (res.success && res.session) {
       showCustomToast(
         'success',

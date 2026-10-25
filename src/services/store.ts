@@ -768,7 +768,7 @@ class BioBuyStore {
    * Open to any visitor — no admin privilege required.
    * Creates a Team record + UserAccount atomically, then returns a live session.
    */
-  public registerTeam(teamName: string, password: string, email?: string): AuthResult {
+  public async registerTeam(teamName: string, password: string, email?: string): Promise<AuthResult> {
     const trimmedName = teamName.trim();
     const trimmedPass = password.trim();
 
@@ -786,7 +786,7 @@ class BioBuyStore {
       return { success: false, message: 'Password must be at least 4 characters.' };
     }
 
-    // --- Uniqueness check (case-insensitive) ---
+    // --- Uniqueness check (case‑insensitive) ---
     const lowerName = trimmedName.toLowerCase();
     const duplicate = this.teams.find(t => {
       const full = t.name.toLowerCase();
@@ -802,7 +802,7 @@ class BioBuyStore {
       return { success: false, message: 'That team name is reserved. Please choose a different name.' };
     }
 
-    // --- Create Team record with PostgreSQL-compliant UUID ---
+    // --- Create Team record with PostgreSQL‑compliant UUID ---
     const teamId = this.generateUUID();
     const newTeam: Team = {
       id: teamId,
@@ -816,60 +816,61 @@ class BioBuyStore {
     const userEmail = email?.trim() || `${trimmedName.toLowerCase().replace(/[^a-z0-9]/g, '_')}@biobuy.lab`;
 
     const client = supabase;
-    // If Supabase is connected, insert the team into public.teams AND register in Supabase Auth (auth.users)!
+    // --- Sync to Supabase (if configured) ---
     if (isSupabaseConfigured && client) {
-      // 1. Try stored RPC function register_team (which runs as SECURITY DEFINER and bypasses RLS)
-      client.rpc('register_team', {
-        p_name: trimmedName,
-        p_initial_budget: 10000,
-      }).then(({ data, error }) => {
-        if (!error && data?.team_id) {
-          newTeam.id = data.team_id;
+      try {
+        // 1. RPC – guaranteed insert (bypasses RLS)
+        const { data: rpcData, error: rpcErr } = await client.rpc('register_team', {
+          p_name: trimmedName,
+          p_initial_budget: 10000,
+        });
+        if (!rpcErr && rpcData?.team_id) {
+          newTeam.id = rpcData.team_id;
         } else {
-          // Fallback to direct table insert
-          client.from('teams').insert({
+          // fallback direct insert (will respect RLS policies)
+          const { error: insertErr } = await client.from('teams').insert({
             id: teamId,
             name: trimmedName,
             initial_budget: 10000,
             remaining_balance: 10000,
-          }).then(({ error: insertErr }) => {
-            if (insertErr) console.warn('Supabase team registration sync notice:', insertErr.message);
           });
+          if (insertErr) console.warn('Supabase team registration fallback error:', insertErr.message);
         }
-      });
 
-      // 2. Synchronize with Supabase Auth (auth.users)
-      client.auth.signUp({
-        email: userEmail,
-        password: trimmedPass,
-        options: {
-          data: {
-            name: trimmedName,
-            team_id: teamId,
-            role: 'contestant',
+        // 2. Auth user creation
+        const { error: authErr } = await client.auth.signUp({
+          email: userEmail,
+          password: trimmedPass,
+          options: {
+            data: {
+              name: trimmedName,
+              team_id: newTeam.id,
+              role: 'contestant',
+            },
           },
-        },
-      }).then(({ data, error }) => {
-        if (error) {
-          if (error.message.includes('rate limit')) {
+        });
+        if (authErr) {
+          if (authErr.message.includes('rate limit')) {
             console.warn('Supabase Auth rate limit note: Disable "Confirm email" in Supabase Auth Settings to lift rate limits.');
           } else {
-            console.warn('Supabase Auth signUp note:', error.message);
+            console.warn('Supabase Auth signUp error:', authErr.message);
           }
         } else {
-          console.log('User registered in Supabase auth.users:', data.user?.email);
+          console.log('User registered in Supabase auth.users:', userEmail);
         }
-      });
+      } catch (e) {
+        console.warn('Unexpected Supabase sync error:', e);
+      }
     }
 
-    // --- Create UserAccount record with PostgreSQL-compliant UUID ---
+    // --- Create local UserAccount record ---
     const userId = this.generateUUID();
     const newUser: UserAccount = {
       id: userId,
       email: userEmail,
       name: trimmedName,
       role: 'contestant',
-      team_id: teamId,
+      team_id: newTeam.id,
       password_hash: trimmedPass,
       created_at: new Date().toISOString(),
     };

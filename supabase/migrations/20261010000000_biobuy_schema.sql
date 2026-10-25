@@ -347,26 +347,31 @@ ALTER TABLE purchases ENABLE ROW LEVEL SECURITY;
 ALTER TABLE budget_transactions ENABLE ROW LEVEL SECURITY;
 
 -- Products: Everyone can read active products
+DROP POLICY IF EXISTS "Public products are viewable by everyone" ON products;
 CREATE POLICY "Public products are viewable by everyone" 
 ON products FOR SELECT 
 USING (true);
 
 -- Products: Only authenticated admin can modify
+DROP POLICY IF EXISTS "Admins can manage products" ON products;
 CREATE POLICY "Admins can manage products"
 ON products FOR ALL
 USING (auth.jwt() ->> 'role' = 'admin' OR auth.role() = 'service_role');
 
 -- Teams: Public/authenticated can view teams
+DROP POLICY IF EXISTS "Teams viewable by all members" ON teams;
 CREATE POLICY "Teams viewable by all members"
 ON teams FOR SELECT
 USING (true);
 
 -- Purchases: Teams can view their own purchases
+DROP POLICY IF EXISTS "Teams can view own purchases" ON purchases;
 CREATE POLICY "Teams can view own purchases"
 ON purchases FOR SELECT
 USING (true);
 
 -- Budget Transactions: Viewable by team members
+DROP POLICY IF EXISTS "Teams can view own budget transactions" ON budget_transactions;
 CREATE POLICY "Teams can view own budget transactions"
 ON budget_transactions FOR SELECT
 USING (true);
