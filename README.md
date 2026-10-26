@@ -94,7 +94,7 @@ npm install
 ```bash
 npm run dev
 ```
-Open [http://localhost:5173](http://localhost:5173) in your browser.
+Open [http://localhost:5175](http://localhost:5175) in your browser.
 
 ### 4. Database Setup (Optional)
 To connect your own Supabase instance:
